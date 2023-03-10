@@ -2,7 +2,7 @@
 
 Official PyTorch Implementation of the <a href="">Tag2Text</a> paper. We will fully open ource the code and data in the future.
 
-Very welcome to try out [Tag2Text Web demo](https://huggingface.co/spaces/xinyu1205/Tag2Text)! It is integrated into [Huggingface Spaces 🤗](https://huggingface.co/spaces) using [Gradio](https://github.com/gradio-app/gradio). 
+Welcome to try out [Tag2Text Web demo](https://huggingface.co/spaces/xinyu1205/Tag2Text)! It is integrated into [Huggingface Spaces 🤗](https://huggingface.co/spaces) using [Gradio](https://github.com/gradio-app/gradio). 
 
 
 ## Abstract
