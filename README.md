@@ -12,7 +12,7 @@ Tag2Text achieves a superior image tag recognition ability by exploiting fine-gr
 <p align="center">
  <table class="tg">
   <tr>
-    <td class="tg-c3ow"><img src="framework.png" align="center" width="700" ></td>
+    <td class="tg-c3ow"><img src="framework.png" align="center" width="800" ></td>
   </tr>
 </table>
 </p>
