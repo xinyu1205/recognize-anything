@@ -1,6 +1,6 @@
 # Tag2Text: Guiding Vision-Language Model via Image Tagging
 
-Official PyTorch Implementation of the <a href="">Tag2Text</a> paper. We will fully open ource the code and data in the future.
+Official PyTorch Implementation of the <a href="https://arxiv.org/abs/2303.05657">Tag2Text</a> paper. We will fully open ource the code and data in the future.
 
 Welcome to try out [Tag2Text Web demo](https://huggingface.co/spaces/xinyu1205/Tag2Text)! It is integrated into [Huggingface Spaces 🤗](https://huggingface.co/spaces) using [Gradio](https://github.com/gradio-app/gradio). 
 
