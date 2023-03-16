@@ -18,6 +18,17 @@ Tag2Text achieves a superior image tag recognition ability by exploiting fine-gr
 </p>
 
 
+## Citation
+If you find our research to be useful for your research, please consider citing.
+
+```
+@article{huang2023tag2text,
+  title={Tag2Text: Guiding Vision-Language Model via Image Tagging},
+  author={Huang, Xinyu and Zhang, Youcai and Ma, Jinyu and Tian, Weiwei and Feng, Rui and Zhang, Yuejie and Li, Yaqian and Guo, Yandong and Zhang, Lei},
+  journal={arXiv preprint arXiv:2303.05657},
+  year={2023}
+}
+```
 
 
 
