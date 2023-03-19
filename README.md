@@ -1,6 +1,6 @@
 # Tag2Text: Guiding Vision-Language Model via Image Tagging
 
-Official PyTorch Implementation of the <a href="https://arxiv.org/abs/2303.05657">Tag2Text</a> paper. We will fully open ource the code and data in the future.
+Official PyTorch Implementation of the <a href="https://arxiv.org/abs/2303.05657">Tag2Text</a> paper. We will fully open source the code and data in the future.
 
 Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text)! Both Tagging and Captioning are included.
 
@@ -19,7 +19,7 @@ Tag2Text achieves a superior image tag recognition ability by exploiting fine-gr
 
 
 ## Citation
-If you find our research to be useful for your research, please consider citing.
+If you find our work to be useful for your research, please consider citing.
 
 ```
 @article{huang2023tag2text,
