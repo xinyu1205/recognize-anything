@@ -74,10 +74,15 @@ if __name__ == "__main__":
         transforms.ToTensor(), normalize
     ])
 
+    # delete some tags that may disturb captioning
+    # 127: "quarter"; 2961: "back", 3351: "two"; 3265: "three"; 3338: "four"; 3355: "five"; 3359: "one"
+    delete_tag_index = [127,2961, 3351, 3265, 3338, 3355, 3359]
+
     #######load model
     model = tag2text_caption(pretrained=args.pretrained,
                              image_size=args.image_size,
-                             vit='swin_b')
+                             vit='swin_b',
+                             delete_tag_index=delete_tag_index)
     model.threshold = args.thre  # threshold for tagging
     model.eval()
 

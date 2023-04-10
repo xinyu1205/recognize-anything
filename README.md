@@ -72,7 +72,7 @@ python inference.py  --image images/1641173_2291260800.jpg \
 Or get the tagging and sepcifed captioning results (optional):
 <pre/>python inference.py  --image images/1641173_2291260800.jpg \
 --pretrained pretrained/tag2text_swin_14m.pth \
---specified-tags "cloud, sky"</pre>
+--specified-tags "cloud,sky"</pre>
 
 ## Credit to previous work
 This work is done with the help of the amazing code base of [BLIP](https://github.com/salesforce/BLIP), thanks very much!

@@ -36,6 +36,8 @@ class Tag2Text_Caption(nn.Module):
             med_config (str): path for the mixture of encoder-decoder model's configuration file
             image_size (int): input image size
             vit (str): model size of vision transformer
+            threshold (int): tagging threshold
+            delete_tag_index (list): delete some tags that may disturb captioning
         """
         super().__init__()
 
@@ -84,9 +86,7 @@ class Tag2Text_Caption(nn.Module):
         decoder_config = BertConfig.from_json_file(med_config)
         self.text_decoder = BertLMHeadModel(config=decoder_config)
 
-        # delete some tags that may disturb captioning
         self.delete_tag_index = delete_tag_index
-
         self.prompt = prompt
         self.prompt_length = len(self.tokenizer(self.prompt).input_ids) - 1
 
