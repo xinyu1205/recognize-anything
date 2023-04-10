@@ -8,7 +8,7 @@ Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu12
 
 ## Highlight
 
-- **Superior Tagging.** Without annotations, Tag2Text achieves **superior** image tag recognition ability of [**3,429**](./data/tag_list.txt) commonly human-used categories.
+- **Superior Tagging.** Without manual annotations, Tag2Text achieves **superior** image tag recognition ability of [**3,429**](./data/tag_list.txt) commonly human-used categories.
 - **Efficient.** Tagging guidance effectively enhances the performance of vision-language models on both **generation-based** and **alignment-based** tasks.
 - **Controllable.** Tag2Text permits users to input **desired tags**, providing the flexibility in composing corresponding texts based on the input tags.
 
@@ -62,7 +62,7 @@ Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu12
 1. Install the dependencies, run:
 <pre/>pip install -r requirements.txt</pre> 
 
-2. Download Tag2Text pretrained checkpoints
+2. Download Tag2Text pretrained checkpoints.
 
 3. Get the tagging and captioning results:
 <pre/>
@@ -71,11 +71,9 @@ python inference.py  --image images/1641173_2291260800.jpg \
 </pre>
 
    Or get the tagging and sepcifed captioning results (optional):
-<pre/>
-python inference.py  --image images/1641173_2291260800.jpg \
+<pre/>python inference.py  --image images/1641173_2291260800.jpg \
 --pretrained pretrained/tag2text_swin_14m.pth \
---specified-tags ['cloud, sky']
-</pre>
+--specified-tags ['cloud, sky']</pre>
 
 ## Credit to previous work
 This work is done with the help of the amazing code base of [BLIP](https://github.com/salesforce/BLIP), thanks very much!
