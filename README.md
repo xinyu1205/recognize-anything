@@ -60,6 +60,7 @@ Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu12
 ## Model Inference
 
 1. Install the dependencies, run:
+
 <pre/>pip install -r requirements.txt</pre> 
 
 2. Download Tag2Text pretrained checkpoints.
