@@ -33,7 +33,7 @@ parser.add_argument('--thre',
                     metavar='N',
                     help='threshold value')
 parser.add_argument('--specified-tags',
-                    default=None,
+                    default='None',
                     help='User input specified tags')
 
 
