@@ -27,6 +27,7 @@ Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu12
 - [x] Release checkpoints.
 - [x] Release inference code.
 - [ ] Release training codes.
+- [ ] Release training datasets.
 
 
 
