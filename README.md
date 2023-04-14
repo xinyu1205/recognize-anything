@@ -1,4 +1,4 @@
-# Tag2Text: Guiding Vision-Language Model via Image Tagging
+# :label: Tag2Text: Guiding Vision-Language Model via Image Tagging
 
 
 Official PyTorch Implementation of the <a href="https://arxiv.org/abs/2303.05657">Tag2Text</a>, an efficient and controllable vision-language pre-training framework. Code is available now!
