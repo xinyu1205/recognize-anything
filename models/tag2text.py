@@ -170,6 +170,8 @@ class Tag2Text_Caption(nn.Module):
                 index = np.argwhere(tag[b] == 1)
                 token = self.tag_list[index].squeeze(axis=1)
                 tag_input.append(' | '.join(token))
+                
+        tag_output = tag_input
 
         # beam search for text generation(default)
         if not sample:
@@ -247,10 +249,7 @@ class Tag2Text_Caption(nn.Module):
             caption = self.tokenizer.decode(output, skip_special_tokens=True)
             captions.append(caption[len(self.prompt):])
         if return_tag_predict == True:
-            if sample:
-                return captions, tag_input
-            else:
-                return captions, tag_input[0:int(len(tag_input) / num_beams)]
+            return  captions, tag_output
         return captions
 
 
