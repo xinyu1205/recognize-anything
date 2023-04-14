@@ -76,9 +76,6 @@ Or get the tagging and sepcifed captioning results (optional):
 --pretrained pretrained/tag2text_swin_14m.pth \
 --specified-tags "cloud,sky"</pre>
 
-## Credit to previous work
-This work is done with the help of the amazing code base of [BLIP](https://github.com/salesforce/BLIP), thanks very much!
-
 
 ## Citation
 If you find our work to be useful for your research, please consider citing.
@@ -91,6 +88,10 @@ If you find our work to be useful for your research, please consider citing.
   year={2023}
 }
 ```
+
+## Acknowledgements
+This work is done with the help of the amazing code base of [BLIP](https://github.com/salesforce/BLIP), thanks very much!
+
 
 
 
