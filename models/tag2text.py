@@ -27,7 +27,7 @@ class Tag2Text_Caption(nn.Module):
                  prompt='a picture of ',
                  threshold=0.68,
                  delete_tag_index=[],
-                 tag_list='data/tag_list.txt'):
+                 tag_list=f'{CONFIG_PATH}/data/tag_list.txt'):
         r""" Tag2Text inference module, both captioning and tagging are included.
         Tag2Text is an efficient and controllable vision-language pre-training framework.
         Described in the paper "Tag2Text: Guiding Vision-Language Model via Image Tagging" https://arxiv.org/abs/2303.05657
