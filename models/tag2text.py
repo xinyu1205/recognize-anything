@@ -19,7 +19,7 @@ warnings.filterwarnings("ignore")
 class Tag2Text_Caption(nn.Module):
 
     def __init__(self,
-                 med_config='configs/med_config.json',
+                 med_config=f'{CONFIG_PATH}/configs/med_config.json',
                  image_size=384,
                  vit='base',
                  vit_grad_ckpt=False,
@@ -44,9 +44,9 @@ class Tag2Text_Caption(nn.Module):
         # create image encoder
         if vit == 'swin_b':
             if image_size == 224:
-                vision_config_path = 'configs/swin/config_swinB_224.json'
+                vision_config_path = f'{CONFIG_PATH}/configs/swin/config_swinB_224.json'
             elif image_size == 384:
-                vision_config_path = 'configs/swin/config_swinB_384.json'
+                vision_config_path = f'{CONFIG_PATH}/configs/swin/config_swinB_384.json'
             vision_config = read_json(vision_config_path)
             assert image_size == vision_config['image_res']
             # assert config['patch_size'] == 32
@@ -96,7 +96,7 @@ class Tag2Text_Caption(nn.Module):
         # create image-tag recognition decoder
         self.threshold = threshold
         self.num_class = len(self.tag_list)
-        q2l_config = BertConfig.from_json_file('configs/q2l_config.json')
+        q2l_config = BertConfig.from_json_file(f'{CONFIG_PATH}/configs/q2l_config.json')
         q2l_config.encoder_width = vision_width
         self.tagging_head = BertModel(config=q2l_config,
                                       add_pooling_layer=False)
