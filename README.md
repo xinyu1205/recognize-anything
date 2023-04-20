@@ -1,12 +1,21 @@
 # :label: Tag2Text: Guiding Vision-Language Model via Image Tagging
 
 
-Official PyTorch Implementation of the <a href="https://arxiv.org/abs/2303.05657">Tag2Text</a>, an efficient and controllable vision-language pre-training framework. Code is available now!
+Official PyTorch Implementation of the <a href="https://arxiv.org/abs/2303.05657">Tag2Text</a>, an efficient and controllable vision-language model with tagging guidance. Code is available now!
 
 Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text)! Both Tagging and Captioning are included.
 
+Tag2Text now is combine with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything), which can automatically recognize, detect, and segment for an image! Tag2Text showcases powerful image tagging capabilities:
+![](./images/tag2text_grounded_sam.jpg)
 
-## Highlight
+
+## :fire: News
+- **`2023/04/10`**: We marry [Tag2Text with with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) to provide powerful image tagging capabilities!
+- **`2023/04/10`**: Code and checkpoint is available Now!
+- **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text) is available on Hugging Face Space! 
+
+
+## :bulb: Highlight
 
 - **Tagging.** Without manual annotations, Tag2Text achieves **superior** image tag recognition ability of [**3,429**](./data/tag_list.txt) commonly human-used categories.
 - **Efficient.** Tagging guidance effectively enhances the performance of vision-language models on both **generation-based** and **alignment-based** tasks.
@@ -21,7 +30,7 @@ Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu12
 </table>
 </p>
 
-## TODO 
+## :writing_hand: TODO 
 
 - [x] Release demo.
 - [x] Release checkpoints.
@@ -31,7 +40,7 @@ Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu12
 
 
 
-## Checkpoints
+## :toolbox: Checkpoints
 
 <!-- insert a table -->
 <table>
@@ -58,7 +67,7 @@ Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu12
 </table>
 
 
-## Model Inference
+## :running: Model Inference
 
 1. Install the dependencies, run:
 
@@ -77,7 +86,7 @@ Or get the tagging and sepcifed captioning results (optional):
 --specified-tags "cloud,sky"</pre>
 
 
-## Citation
+## :black_nib: Citation
 If you find our work to be useful for your research, please consider citing.
 
 ```
@@ -89,8 +98,12 @@ If you find our work to be useful for your research, please consider citing.
 }
 ```
 
-## Acknowledgements
+## :hearts: Acknowledgements
 This work is done with the help of the amazing code base of [BLIP](https://github.com/salesforce/BLIP), thanks very much!
+
+We also want to thank @Cheng Rui @Shilong Liu @Ren Tianhe for their help in [marrying Tag2Text with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything).
+
+
 
 
 
