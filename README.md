@@ -10,7 +10,7 @@ Tag2Text now is combine with [Grounded-SAM](https://github.com/IDEA-Research/Gro
 
 
 ## :fire: News
-- **`2023/04/10`**: We marry [Tag2Text with with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) to provide powerful image tagging capabilities!
+- **`2023/04/20`**: We marry [Tag2Text with with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) to provide powerful image tagging capabilities!
 - **`2023/04/10`**: Code and checkpoint is available Now!
 - **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text) is available on Hugging Face Space! 
 
