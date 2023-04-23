@@ -5,7 +5,7 @@ Official PyTorch Implementation of the <a href="https://arxiv.org/abs/2303.05657
 
 Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text)! Both Tagging and Captioning are included.
 
-Tag2Text now is combine with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything), which can automatically recognize, detect, and segment for an image! Tag2Text showcases powerful image tagging capabilities:
+Tag2Text now is combine with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything), which can automatically recognize, detect, and segment for an image! Tag2Text showcases powerful image recognition capabilities:
 ![](./images/tag2text_grounded_sam.jpg)
 
 
