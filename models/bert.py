@@ -224,6 +224,12 @@ class BertSelfAttention(nn.Module):
 
         past_key_value = (key_layer, value_layer)
 
+        # compatible with higher versions of transformers
+        if key_layer.shape[0] > query_layer.shape[0]:
+            key_layer = key_layer[:query_layer.shape[0], :, :, :]
+            attention_mask = attention_mask[:query_layer.shape[0], :, :]
+            value_layer = value_layer[:query_layer.shape[0], :, :, :]
+
         # Take the dot product between "query" and "key" to get the raw attention scores.
         attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2))
 
