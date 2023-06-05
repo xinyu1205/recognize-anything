@@ -10,7 +10,9 @@ Tag2Text now is combine with [Grounded-SAM](https://github.com/IDEA-Research/Gro
 
 
 ## :fire: News
+- **`2023/06/05`**:   [Prompt-can-anything](https://github.com/positive666/Prompt-Can-Anything) ,gradio web library that integrates SOTA multimodal large models, which aims to become an "agent" to help you do anything, including Tag2text as the core model for graphic understanding ,Contains automatic visual tasks, voice, graphics, GPT and more . version_1.15 realease！
 - **`2023/05/20`**: Tag2Text is combined with [VideoChat](https://github.com/OpenGVLab/Ask-Anything), Tag2Text provides powerful tagging and captioning capabilities as a fundamental component!
+
 - **`2023/04/20`**: We marry [Tag2Text with with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) to provide powerful image recognition capabilities!
 - **`2023/04/10`**: Code and checkpoint is available Now!
 - **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text) is available on Hugging Face Space! 
