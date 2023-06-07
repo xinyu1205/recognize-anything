@@ -19,20 +19,6 @@ When combined with localization models ([Grounded-SAM](https://github.com/IDEA-R
 - :rose: [[Read Tag2Text arXiv Paper](https://arxiv.org/abs/2303.05657)]
 - :mushroom: [[Try our Tag2Text web Demo! 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text)]
 
-## :sparkles: Highlight Projects with other Models
-- [Tag2Text/RAM with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) is trong and general pipeline for visual semantic analysis, which can automatically **recognize**, detect, and segment for an image!
-- [Ask-Anything](https://github.com/OpenGVLab/Ask-Anything) is a multifunctional video question answering tool. Tag2Text provides powerful tagging and captioning capabilities as a fundamental component.
-- [Prompt-can-anything](https://github.com/positive666/Prompt-Can-Anything) is a gradio web library that integrates SOTA multimodal large models, including Tag2text as the core model for graphic understanding
-
-
-## :fire: News
-
-- **`2023/06/07`**: We release the [Recognize Anything Model (RAM)](https://recognize-anything.github.io/), a strong image tagging model!
-- **`2023/06/05`**: Tag2Text is combined with [Prompt-can-anything](https://github.com/OpenGVLab/Ask-Anything).
-- **`2023/05/20`**: Tag2Text is combined with [VideoChat](https://github.com/OpenGVLab/Ask-Anything).
-- **`2023/04/20`**: We marry Tag2Text with with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything).
-- **`2023/04/10`**: Code and checkpoint is available Now!
-- **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text) is available on Hugging Face Space! 
 
 
 ## :bulb: Highlight
@@ -47,7 +33,6 @@ When combined with localization models ([Grounded-SAM](https://github.com/IDEA-R
   </tr>
 </table>
 </p>
-
 
 
 <details close>
@@ -80,6 +65,26 @@ Advancements of RAM on Tag2Text.
 
 
 </details>
+
+
+## :sparkles: Highlight Projects with other Models
+- [Tag2Text/RAM with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) is trong and general pipeline for visual semantic analysis, which can automatically **recognize**, detect, and segment for an image!
+- [Ask-Anything](https://github.com/OpenGVLab/Ask-Anything) is a multifunctional video question answering tool. Tag2Text provides powerful tagging and captioning capabilities as a fundamental component.
+- [Prompt-can-anything](https://github.com/positive666/Prompt-Can-Anything) is a gradio web library that integrates SOTA multimodal large models, including Tag2text as the core model for graphic understanding
+
+
+
+
+## :fire: News
+
+- **`2023/06/07`**: We release the [Recognize Anything Model (RAM)](https://recognize-anything.github.io/), a strong image tagging model!
+- **`2023/06/05`**: Tag2Text is combined with [Prompt-can-anything](https://github.com/OpenGVLab/Ask-Anything).
+- **`2023/05/20`**: Tag2Text is combined with [VideoChat](https://github.com/OpenGVLab/Ask-Anything).
+- **`2023/04/20`**: We marry Tag2Text with with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything).
+- **`2023/04/10`**: Code and checkpoint is available Now!
+- **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text) is available on Hugging Face Space! 
+
+
 
 
 
