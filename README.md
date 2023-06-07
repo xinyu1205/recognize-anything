@@ -13,17 +13,16 @@ When combined with localization models ([Grounded-SAM](https://github.com/IDEA-R
 ## :sun_with_face: Helpful Tutorial
 
 
-- :apple:  [[Access RAM Homepage](https://arxiv.org/abs/2306.03514)]
-- :grapes: [[Access Tag2Text Homepage](https://arxiv.org/abs/2303.05657)]
+- :apple:  [[Access RAM Homepage](https://recognize-anything.github.io/)]
+- :grapes: [[Access Tag2Text Homepage](https://tag2text.github.io/)]
 - :sunflower:  [[Read RAM arXiv Paper](https://arxiv.org/abs/2306.03514)]
 - :rose: [[Read Tag2Text arXiv Paper](https://arxiv.org/abs/2303.05657)]
-- :mushroom: [[Try our Tag2Text web Demo 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text)]
+- :mushroom: [[Try our Tag2Text web Demo! 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text)]
 
 ## :sparkles: Highlight Projects with other Models
 - [Tag2Text/SAM with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) is trong and general pipeline for visual semantic analysis, which can automatically **recognize**, detect, and segment for an image!
 - [Ask-Anything](https://github.com/OpenGVLab/Ask-Anything) is a multifunctional video question answering tool. Tag2Text provides powerful tagging and captioning capabilities as a fundamental component.
 - [Prompt-can-anything](https://github.com/positive666/Prompt-Can-Anything) is a gradio web library that integrates SOTA multimodal large models, including Tag2text as the core model for graphic understanding
-
 
 
 ## :fire: News
