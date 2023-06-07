@@ -1,24 +1,60 @@
-# :label: Tag2Text: Guiding Vision-Language Model via Image Tagging
+# :label: Tag2Text: Guiding Vision-Language Model via Image Tagging & Recognize Anything: A Strong Image Tagging Model
+
+Official PyTorch Implementation of the <a href="https://recognize-anything.github.io/">Recognize Model (RAM)</a> and the <a href="https://tag2text.github.io/">Tag2Text</a>.
+
+- RAM is a strong image tagging model, which can recognize any common category with high accuracy.
+- Tag2Text is an efficient and controllable vision-language model with tagging guidance.
 
 
-Official PyTorch Implementation of the <a href="https://arxiv.org/abs/2303.05657">Tag2Text</a>, an efficient and controllable vision-language model with tagging guidance. Code is available now!
+When combined with localization models ([Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything)), Tag2Text and RAM form a strong and general pipeline for visual semantic analysis.
 
-Welcome to try out [Tag2Text Web demo🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text)! Both Tagging and Captioning are included.
+![](./images/ram_grounded_sam.jpg)
 
-Tag2Text now is combine with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything), which can automatically recognize, detect, and segment for an image! Tag2Text showcases powerful image recognition capabilities:
-![](./images/tag2text_grounded_sam.jpg)
+## :sun_with_face: Helpful Tutorial
+
+
+- :apple:  [[Access RAM Homepage](https://arxiv.org/abs/2306.03514)]
+- :grapes: [[Access Tag2Text Homepage](https://arxiv.org/abs/2303.05657)]
+- :sunflower:  [[Read RAM arXiv Paper](https://arxiv.org/abs/2306.03514)]
+- :rose: [[Read Tag2Text arXiv Paper](https://arxiv.org/abs/2303.05657)]
+- :mushroom: [[Try our Tag2Text web Demo 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text)]
+
+## :sparkles: Highlight Projects with other Models
+- [Tag2Text/SAM with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) is trong and general pipeline for visual semantic analysis, which can automatically **recognize**, detect, and segment for an image!
+- [Ask-Anything](https://github.com/OpenGVLab/Ask-Anything) is a multifunctional video question answering tool. Tag2Text provides powerful tagging and captioning capabilities as a fundamental component.
+- [Prompt-can-anything](https://github.com/OpenGVLab/Ask-Anything) is a gradio web library that integrates SOTA multimodal large models, including Tag2text as the core model for graphic understanding
+
 
 
 ## :fire: News
-- **`2023/06/05`**:   [Prompt-can-anything](https://github.com/positive666/Prompt-Can-Anything) ,gradio web library that integrates SOTA multimodal large models, which aims to become an "agent" to help you do anything, including Tag2text as the core model for graphic understanding ,Contains automatic visual tasks, voice, graphics, GPT and more . version_1.15 realease！
-- **`2023/05/20`**: Tag2Text is combined with [VideoChat](https://github.com/OpenGVLab/Ask-Anything), Tag2Text provides powerful tagging and captioning capabilities as a fundamental component!
-- **`2023/04/20`**: We marry [Tag2Text with with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) to provide powerful image recognition capabilities!
+
+- **`2023/06/07`**: We release the Recognize Anything Model (RAM), a strong image tagging model!
+- **`2023/06/05`**: Tag2Text is combined with [Prompt-can-anything](https://github.com/OpenGVLab/Ask-Anything).
+- **`2023/05/20`**: Tag2Text is combined with [VideoChat](https://github.com/OpenGVLab/Ask-Anything).
+- **`2023/04/20`**: We marry Tag2Text with with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything).
 - **`2023/04/10`**: Code and checkpoint is available Now!
 - **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text) is available on Hugging Face Space! 
 
 
 ## :bulb: Highlight
+**Recognition and localization are two foundation computer vision tasks.**
+- **The Segment Anything Model (SAM)** excels in **localization capabilities**, while it falls short when it comes to **recognition tasks**.
+- **The Recognize Anything Model (RAM) and Tag2Text** exhibits **exceptional recognition abilities**, in terms of **both accuracy and scope**.
 
+<p align="center">
+ <table class="tg">
+  <tr>
+    <td class="tg-c3ow"><img src="images/localization_and_recognition.jpg" align="center" width="800" ></td>
+  </tr>
+</table>
+</p>
+
+
+
+<details close>
+<summary><font size="4">
+Tag2Text for Vision-Language Tasks.
+</font></summary>
 - **Tagging.** Without manual annotations, Tag2Text achieves **superior** image tag recognition ability of [**3,429**](./data/tag_list.txt) commonly human-used categories.
 - **Efficient.** Tagging guidance effectively enhances the performance of vision-language models on both **generation-based** and **alignment-based** tasks.
 - **Controllable.** Tag2Text permits users to input **desired tags**, providing the flexibility in composing corresponding texts based on the input tags.
@@ -32,13 +68,16 @@ Tag2Text now is combine with [Grounded-SAM](https://github.com/IDEA-Research/Gro
 </table>
 </p>
 
+</details>
+
 ## :writing_hand: TODO 
 
-- [x] Release demo.
+- [x] Release Tag2Text demo.
 - [x] Release checkpoints.
 - [x] Release inference code.
-- [ ] Release training codes.
-- [ ] Release training datasets.
+- [] Release RAM demo and checkpoints (until June 14th at the latest).
+- [ ] Release training codes (until August 1st at the latest).
+- [ ] Release training datasets (until August 1st at the latest).
 
 
 
@@ -69,7 +108,7 @@ Tag2Text now is combine with [Grounded-SAM](https://github.com/IDEA-Research/Gro
 </table>
 
 
-## :running: Model Inference
+## :running: Tag2Text Inference
 
 1. Install the dependencies, run:
 
@@ -92,12 +131,22 @@ Or get the tagging and sepcifed captioning results (optional):
 If you find our work to be useful for your research, please consider citing.
 
 ```
+@misc{zhang2023recognize,
+  title={Recognize Anything: A Strong Image Tagging Model}, 
+  author={Youcai Zhang and Xinyu Huang and Jinyu Ma and Zhaoyang Li and Zhaochuan Luo and Yanchun Xie and Yuzhuo Qin and Tong Luo and Yaqian Li and Shilong Liu and Yandong Guo and Lei Zhang},
+  year={2023},
+  eprint={2306.03514},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+
 @article{huang2023tag2text,
   title={Tag2Text: Guiding Vision-Language Model via Image Tagging},
   author={Huang, Xinyu and Zhang, Youcai and Ma, Jinyu and Tian, Weiwei and Feng, Rui and Zhang, Yuejie and Li, Yaqian and Guo, Yandong and Zhang, Lei},
   journal={arXiv preprint arXiv:2303.05657},
   year={2023}
 }
+
 ```
 
 ## :hearts: Acknowledgements

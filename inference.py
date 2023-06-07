@@ -87,7 +87,7 @@ if __name__ == "__main__":
     model.eval()
 
     model = model.to(device)
-    raw_image = Image.open(args.image).resize(
+    raw_image = Image.open(args.image).convert("RGB").resize(
         (args.image_size, args.image_size))
     image = transform(raw_image).unsqueeze(0).to(device)
 
