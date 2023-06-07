@@ -67,8 +67,22 @@ Tag2Text for Vision-Language Tasks.
   </tr>
 </table>
 </p>
+</details>
+
+
+<details close>
+<summary><font size="4">
+Advancements of RAM on Tag2Text.
+</font></summary>
+
+- **Accuracy.** RAM utilizes a data engine to generate additional annotations and clean incorrect ones, resulting higher accuracy compared to Tag2Text.
+- **Scope.** Tag2Text recognizes 3,400+ fixed tags. RAM upgrades the number to 6,400+, covering more valuable categories. With open-set capability, RAM is feasible to recognize any common category.
+
 
 </details>
+
+
+
 
 ## :writing_hand: TODO 
 
