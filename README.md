@@ -27,7 +27,7 @@ When combined with localization models ([Grounded-SAM](https://github.com/IDEA-R
 
 ## :fire: News
 
-- **`2023/06/07`**: We release the Recognize Anything Model (RAM), a strong image tagging model!
+- **`2023/06/07`**: We release the [Recognize Anything Model (RAM)](https://recognize-anything.github.io/), a strong image tagging model!
 - **`2023/06/05`**: Tag2Text is combined with [Prompt-can-anything](https://github.com/OpenGVLab/Ask-Anything).
 - **`2023/05/20`**: Tag2Text is combined with [VideoChat](https://github.com/OpenGVLab/Ask-Anything).
 - **`2023/04/20`**: We marry Tag2Text with with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything).
