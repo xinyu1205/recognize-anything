@@ -1,4 +1,4 @@
-# :label: Tag2Text: Guiding Vision-Language Model via Image Tagging & Recognize Anything: A Strong Image Tagging Model
+# :label: Recognize Anything: A Strong Image Tagging Model & Tag2Text: Guiding Vision-Language Model via Image Tagging
 
 Official PyTorch Implementation of the <a href="https://recognize-anything.github.io/">Recognize Model (RAM)</a> and the <a href="https://tag2text.github.io/">Tag2Text</a>.
 
@@ -75,7 +75,7 @@ Tag2Text for Vision-Language Tasks.
 - [x] Release Tag2Text demo.
 - [x] Release checkpoints.
 - [x] Release inference code.
-- [] Release RAM demo and checkpoints (until June 14th at the latest).
+- [ ] Release RAM demo and checkpoints (until June 14th at the latest).
 - [ ] Release training codes (until August 1st at the latest).
 - [ ] Release training datasets (until August 1st at the latest).
 
