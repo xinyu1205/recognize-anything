@@ -160,7 +160,6 @@ If you find our work to be useful for your research, please consider citing.
   journal={arXiv preprint arXiv:2303.05657},
   year={2023}
 }
-
 ```
 
 ## :hearts: Acknowledgements
