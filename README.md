@@ -22,7 +22,7 @@ When combined with localization models ([Grounded-SAM](https://github.com/IDEA-R
 ## :sparkles: Highlight Projects with other Models
 - [Tag2Text/SAM with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) is trong and general pipeline for visual semantic analysis, which can automatically **recognize**, detect, and segment for an image!
 - [Ask-Anything](https://github.com/OpenGVLab/Ask-Anything) is a multifunctional video question answering tool. Tag2Text provides powerful tagging and captioning capabilities as a fundamental component.
-- [Prompt-can-anything](https://github.com/OpenGVLab/Ask-Anything) is a gradio web library that integrates SOTA multimodal large models, including Tag2text as the core model for graphic understanding
+- [Prompt-can-anything](https://github.com/positive666/Prompt-Can-Anything) is a gradio web library that integrates SOTA multimodal large models, including Tag2text as the core model for graphic understanding
 
 
 
