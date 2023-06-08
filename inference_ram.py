@@ -31,12 +31,7 @@ parser.add_argument('--image-size',
 def inference(image, model):
 
     with torch.no_grad():
-        caption, tag_predict = model.generate(image,
-                                              tag_input=None,
-                                              max_length=50,
-                                              return_tag_predict=True)
-
-    tags, tags_chinese = model.generate_tag(image)
+        tags, tags_chinese = model.generate_tag(image)
 
     return tags[0],tags_chinese[0]
 
