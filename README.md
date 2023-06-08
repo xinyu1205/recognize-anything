@@ -104,8 +104,8 @@ Advancements of RAM on Tag2Text.
 - [x] Release checkpoints.
 - [x] Release inference code.
 - [x] Release RAM demo and checkpoints.
-- [ ] Release training codes (until August 1st at the latest).
-- [ ] Release training datasets (until August 1st at the latest).
+- [ ] Release training codes (until July 8st at the latest).
+- [ ] Release training datasets (until July 15st at the latest).
 
 
 
@@ -158,7 +158,7 @@ python inference_ram.py  --image images/1641173_2291260800.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
 </pre>
 
-### **RAM Zero-Shot Inference is Comming!** ##
+**RAM Zero-Shot Inference is Comming!** 
 
 ### **Tag2Text Inference** ##
 
