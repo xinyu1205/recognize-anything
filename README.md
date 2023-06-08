@@ -63,6 +63,14 @@ Advancements of RAM on Tag2Text.
 - **Accuracy.** RAM utilizes a data engine to generate additional annotations and clean incorrect ones, resulting higher accuracy compared to Tag2Text.
 - **Scope.** Tag2Text recognizes 3,400+ fixed tags. RAM upgrades the number to 6,400+, covering more valuable categories. With open-set capability, RAM is feasible to recognize any common category.
 
+<p align="center">
+ <table class="tg">
+  <tr>
+    <td class="tg-c3ow"><img src="images/tagging_results.jpg" align="center" width="800" ></td>
+  </tr>
+</table>
+</p>
+
 
 </details>
 
