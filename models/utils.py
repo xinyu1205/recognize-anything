@@ -236,3 +236,43 @@ def load_checkpoint_swinbase(model, url_or_filename, kwargs):
     msg = model.load_state_dict(state_dict, strict=False)
     print('load checkpoint from %s' % url_or_filename)
     return model, msg
+
+
+def load_checkpoint_swinlarge(model, url_or_filename, kwargs):
+    if kwargs['image_size'] == 224:
+        vision_config_path = f'{CONFIG_PATH}/configs/swin/config_swinL_224.json'
+    elif kwargs['image_size'] == 384:
+        vision_config_path = f'{CONFIG_PATH}/configs/swin/config_swinL_384.json'
+    window_size = read_json(vision_config_path)['window_size']
+    print('--------------')
+    print(url_or_filename)
+    print('--------------')
+    if is_url(url_or_filename):
+        cached_file = download_cached_file(url_or_filename,
+                                           check_hash=False,
+                                           progress=True)
+        checkpoint = torch.load(cached_file, map_location='cpu')
+    elif os.path.isfile(url_or_filename):
+        checkpoint = torch.load(url_or_filename, map_location='cpu')
+    else:
+        raise RuntimeError('checkpoint url or path is invalid')
+
+    state_dict = checkpoint['model']
+
+    for k in list(state_dict.keys()):
+        if 'relative_position_bias_table' in k:
+            dst_num_pos = (2 * window_size - 1)**2
+            state_dict[k] = interpolate_relative_pos_embed(state_dict[k],
+                                                           dst_num_pos,
+                                                           param_name=k)
+        elif ('relative_position_index' in k) or ('attn_mask' in k):
+            del state_dict[k]
+        elif "vision_multi" in k:
+            state_dict[k.replace("vision_multi",
+                                 "tagging_head")] = state_dict.pop(k)
+
+    msg = model.load_state_dict(state_dict, strict=False)
+    print('load checkpoint from %s' % url_or_filename)
+    return model, msg
+
+

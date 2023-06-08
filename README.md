@@ -12,12 +12,12 @@ When combined with localization models ([Grounded-SAM](https://github.com/IDEA-R
 
 ## :sun_with_face: Helpful Tutorial
 
-
+- :mushroom: [[Try our RAM & Tag2Text web Demo! 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text)]
 - :apple:  [[Access RAM Homepage](https://recognize-anything.github.io/)]
 - :grapes: [[Access Tag2Text Homepage](https://tag2text.github.io/)]
 - :sunflower:  [[Read RAM arXiv Paper](https://arxiv.org/abs/2306.03514)]
 - :rose: [[Read Tag2Text arXiv Paper](https://arxiv.org/abs/2303.05657)]
-- :mushroom: [[Try our Tag2Text web Demo! 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text)]
+
 
 
 
@@ -85,12 +85,13 @@ Advancements of RAM on Tag2Text.
 
 ## :fire: News
 
+- **`2023/06/08`**: We release the [Recognize Anything Model (RAM) Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text), checkpoints and inference code!
 - **`2023/06/07`**: We release the [Recognize Anything Model (RAM)](https://recognize-anything.github.io/), a strong image tagging model!
 - **`2023/06/05`**: Tag2Text is combined with [Prompt-can-anything](https://github.com/OpenGVLab/Ask-Anything).
 - **`2023/05/20`**: Tag2Text is combined with [VideoChat](https://github.com/OpenGVLab/Ask-Anything).
 - **`2023/04/20`**: We marry Tag2Text with with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything).
 - **`2023/04/10`**: Code and checkpoint is available Now!
-- **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Tag2Text) is available on Hugging Face Space! 
+- **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text) is available on Hugging Face Space! 
 
 
 
@@ -102,7 +103,7 @@ Advancements of RAM on Tag2Text.
 - [x] Release Tag2Text demo.
 - [x] Release checkpoints.
 - [x] Release inference code.
-- [ ] Release RAM demo and checkpoints (until June 9th at the latest).
+- [x] Release RAM demo and checkpoints.
 - [ ] Release training codes (until August 1st at the latest).
 - [ ] Release training datasets (until August 1st at the latest).
 
@@ -125,17 +126,41 @@ Advancements of RAM on Tag2Text.
   <tbody>
     <tr>
       <th>1</th>
+      <td>RAM-Swin</td>
+      <td>Swin-Large</td>
+      <td>COCO, VG, SBU, CC-3M, CC-12M</td>
+      <td>Demo version can recognize any common category with high accuracy.</td>
+      <td><a href="https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text/blob/main/ram_swin_large_14m.pth">Download  link</a></td>
+    </tr>
+    <tr>
+      <th>2</th>
       <td>Tag2Text-Swin</td>
       <td>Swin-Base</td>
       <td>COCO, VG, SBU, CC-3M, CC-12M</td>
       <td>Demo version with comprehensive captions.</td>
-      <td><a href="https://huggingface.co/spaces/xinyu1205/Tag2Text/blob/main/tag2text_swin_14m.pth">Download  link</a></td>
+      <td><a href="https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text/blob/main/tag2text_swin_14m.pth">Download  link</a></td>
     </tr>
   </tbody>
 </table>
 
 
-## :running: Tag2Text Inference
+## :running: Model Inference
+### **RAM Inference** ##
+1. Install the dependencies, run:
+
+<pre/>pip install -r requirements.txt</pre> 
+
+2. Download RAM pretrained checkpoints.
+
+3. Get the English and Chinese outputs of the images:
+<pre/>
+python inference_ram.py  --image images/1641173_2291260800.jpg \
+--pretrained pretrained/ram_swin_large_14m.pth
+</pre>
+
+### **RAM Zero-Shot Inference is Comming!** ##
+
+### **Tag2Text Inference** ##
 
 1. Install the dependencies, run:
 
@@ -145,11 +170,11 @@ Advancements of RAM on Tag2Text.
 
 3. Get the tagging and captioning results:
 <pre/>
-python inference.py  --image images/1641173_2291260800.jpg \
+python inference_tag2text.py  --image images/1641173_2291260800.jpg \
 --pretrained pretrained/tag2text_swin_14m.pth
 </pre>
 Or get the tagging and sepcifed captioning results (optional):
-<pre/>python inference.py  --image images/1641173_2291260800.jpg \
+<pre/>python inference_tag2text.py  --image images/1641173_2291260800.jpg \
 --pretrained pretrained/tag2text_swin_14m.pth \
 --specified-tags "cloud,sky"</pre>
 
