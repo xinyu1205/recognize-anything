@@ -94,7 +94,7 @@ Advancements of RAM on Tag2Text.
 - [x] Release Tag2Text demo.
 - [x] Release checkpoints.
 - [x] Release inference code.
-- [ ] Release RAM demo and checkpoints (until June 14th at the latest).
+- [ ] Release RAM demo and checkpoints (until June 9th at the latest).
 - [ ] Release training codes (until August 1st at the latest).
 - [ ] Release training datasets (until August 1st at the latest).
 
