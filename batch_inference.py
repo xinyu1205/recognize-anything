@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-'''
-Author: gaoyong gaoyong06@qq.com
-Date: 2023-06-08 10:51:43
-LastEditors: gaoyong gaoyong06@qq.com
-LastEditTime: 2023-06-08 11:07:57
-FilePath: \Tag2Text\test.py
-Description: 自动生成图片标签和内容描述
-'''
 import argparse
 import json
 import os
@@ -237,8 +229,8 @@ def main():
     f2.close()
 
 # 使用示例：
-# 1. python batch_inference.py --pretrained /home/ecs-user/pretrain/tag2text_swin_14m.pth --image-dir /home/ecs-user/download/all_v16_sample --model-type tag2text
-# 2. python batch_inference.py --pretrained /home/ecs-user/pretrain/ram_swin_large_14m.pth --image-dir /home/ecs-user/download/all_v16_sample --model-type ram
+# 1. python batch_inference.py --pretrained pretrain/tag2text_swin_14m.pth --image-dir image_dir --model-type tag2text
+# 2. python batch_inference.py --pretrained pretrain/ram_swin_large_14m.pth --image-dir image_dir --model-type ram
 
 
 if __name__ == '__main__':
