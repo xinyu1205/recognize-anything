@@ -96,7 +96,7 @@ def initialize_model(cache_path, pretrained, image_size, thre, model_type):
     return model
 
 
-def generate(model, image, input_tags=None):
+def generate(model, image, input_tags=None, model_type='tag2text'):
     """
     This function generates tags and captions for an input image.
     :param model: The neural network model used for generating captions and predicting tags for an input
@@ -111,24 +111,33 @@ def generate(model, image, input_tags=None):
         input_tags = None
 
     with torch.no_grad():
-        caption, tag_predict = model.generate(image,
-                                              tag_input=None,
-                                              max_length=50,
-                                              return_tag_predict=True)
+        if model_type == 'tag2text':
+            caption, tag_predict = model.generate(image,
+                                                tag_input=None,
+                                                max_length=50,
+                                                return_tag_predict=True)
+        elif model_type == 'ram':
+            tag_predict, _ = model.generate_tag(image)
+            caption = [None]
 
     if input_tags is None:
         return tag_predict[0], None, caption[0]
 
     input_tag_list = [input_tags.replace(',', ' | ')]
     with torch.no_grad():
-        caption, input_tags = model.generate(image,
-                                             tag_input=input_tag_list,
-                                             max_length=50,
-                                             return_tag_predict=True)
+        if model_type == 'tag2text':
+            caption, input_tags = model.generate(image,
+                                                tag_input=input_tag_list,
+                                                max_length=50,
+                                                return_tag_predict=True)
+        elif model_type == 'ram':
+            tag_predict, _ = model.generate_tag(image)
+            caption = [None]
+
     return tag_predict[0], input_tags[0], caption[0]
 
 
-def inference(images_dir, image_list, model, image_size, input_tags=None):
+def inference(images_dir, image_list, model, image_size, input_tags=None, model_type='tag2text'):
     """
     This function takes a list of images or a directory containing images, a model, generates captions
     for the images, and optionally takes a list of input tags to generate captions with those tags.
@@ -163,7 +172,7 @@ def inference(images_dir, image_list, model, image_size, input_tags=None):
                 continue
             img = Image.open(filepath).convert("RGB")
             img_tensor = transform(img).unsqueeze(0).to(device)
-            res = generate(model, img_tensor, input_tags)
+            res = generate(model, img_tensor, input_tags, model_type)
             results.append({
                 "filepath": filepath,
                 "model_identified_tags": res[0],
@@ -178,7 +187,7 @@ def inference(images_dir, image_list, model, image_size, input_tags=None):
                 continue
             img = Image.open(filepath).convert("RGB")
             img_tensor = transform(img).unsqueeze(0).to(device)
-            res = generate(model, img_tensor, input_tags)
+            res = generate(model, img_tensor, input_tags, model_type)
             results.append({
                 "filepath": img_path,
                 "model_identified_tags": res[0],
@@ -205,7 +214,7 @@ def main():
 
     # perform inference on images
     data = inference(args.image_dir, images, model,
-                    args.image_size, input_tags=None)
+                    args.image_size, input_tags=None, model_type=args.model_type)
 
     # output the results
     results = {
