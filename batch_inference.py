@@ -223,7 +223,7 @@ def main():
     json_results = json.dumps(results, ensure_ascii=False, indent=2)
     print(json_results)
 
-    f2 = open('ram_results.json', 'w')
+    f2 = open(f'{args.model_type}_results.json', 'w')
     f2.write(json_results)
     f2.close()
 
