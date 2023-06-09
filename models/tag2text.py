@@ -361,7 +361,7 @@ class Tag2Text_Caption(nn.Module):
             logits = self.fc(tagging_embed[0])
 
             targets = torch.where(
-                torch.sigmoid(logits) > self.class_threshold,
+                torch.sigmoid(logits) > self.class_threshold.to(image.device),
                 torch.tensor(1.0).to(image.device),
                 torch.zeros(self.num_class).to(image.device))
 
