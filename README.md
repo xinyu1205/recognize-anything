@@ -2,11 +2,12 @@
 
 Official PyTorch Implementation of the <a href="https://recognize-anything.github.io/">Recognize Anything Model (RAM)</a> and the <a href="https://tag2text.github.io/">Tag2Text Model</a>.
 
-- RAM is a strong image tagging model, which can recognize any common category with high accuracy.
-- Tag2Text is an efficient and controllable vision-language model with tagging guidance.
+- RAM is an image tagging model, which can recognize any common category with high accuracy.
+- Tag2Text is a vision-language model guided by tagging, which can support caption, retrieval and tagging.
 
 
-When combined with localization models ([Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything)), Tag2Text and RAM form a strong and general pipeline for visual semantic analysis.
+Both Tag2Text and RAM exihibit strong recognition ability. 
+They can combined with localization models (Grounding-DINO and SAM) to develop a strong and general pipeline for visual semantic analysis. [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything)
 
 ![](./images/ram_grounded_sam.jpg)
 
@@ -116,8 +117,8 @@ Advancements of RAM on Tag2Text.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>name</th>
-      <th>backbone</th>
+      <th>Name</th>
+      <th>Backbone</th>
       <th>Data</th>
       <th>Illustration</th>
       <th>Checkpoint</th>
@@ -126,18 +127,18 @@ Advancements of RAM on Tag2Text.
   <tbody>
     <tr>
       <th>1</th>
-      <td>RAM-Swin</td>
+      <td>RAM-14M</td>
       <td>Swin-Large</td>
       <td>COCO, VG, SBU, CC-3M, CC-12M</td>
-      <td>Demo version can recognize any common category with high accuracy.</td>
+      <td>Provide strong image tagging ability.</td>
       <td><a href="https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text/blob/main/ram_swin_large_14m.pth">Download  link</a></td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Tag2Text-Swin</td>
+      <td>Tag2Text-14M</td>
       <td>Swin-Base</td>
       <td>COCO, VG, SBU, CC-3M, CC-12M</td>
-      <td>Demo version with comprehensive captions.</td>
+      <td>Support caption, retrieval and tagging.</td>
       <td><a href="https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text/blob/main/tag2text_swin_14m.pth">Download  link</a></td>
     </tr>
   </tbody>
