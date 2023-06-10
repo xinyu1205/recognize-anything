@@ -183,13 +183,11 @@ Or get the tagging and sepcifed captioning results (optional):
 If you find our work to be useful for your research, please consider citing.
 
 ```
-@misc{zhang2023recognize,
-  title={Recognize Anything: A Strong Image Tagging Model}, 
-  author={Youcai Zhang and Xinyu Huang and Jinyu Ma and Zhaoyang Li and Zhaochuan Luo and Yanchun Xie and Yuzhuo Qin and Tong Luo and Yaqian Li and Shilong Liu and Yandong Guo and Lei Zhang},
-  year={2023},
-  eprint={2306.03514},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV}
+@article{zhang2023recognize,
+  title={Recognize Anything: A Strong Image Tagging Model},
+  author={Zhang, Youcai and Huang, Xinyu and Ma, Jinyu and Li, Zhaoyang and Luo, Zhaochuan and Xie, Yanchun and Qin, Yuzhuo and Luo, Tong and Li, Yaqian and Liu, Shilong and others},
+  journal={arXiv preprint arXiv:2306.03514},
+  year={2023}
 }
 
 @article{huang2023tag2text,
