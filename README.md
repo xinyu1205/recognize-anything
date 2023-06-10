@@ -7,7 +7,7 @@ Official PyTorch Implementation of the <a href="https://recognize-anything.githu
 
 
 Both Tag2Text and RAM exihibit strong recognition ability. 
-They can combined with localization models (Grounding-DINO and SAM) to develop a strong and general pipeline for visual semantic analysis. [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything)
+We have combined Tag2Text and RAM with localization models (Grounding-DINO and SAM) to develop a strong and general pipeline for visual semantic analysis in the [Grounded-SAM] project(https://github.com/IDEA-Research/Grounded-Segment-Anything).
 
 ![](./images/ram_grounded_sam.jpg)
 
