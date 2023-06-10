@@ -1,6 +1,6 @@
 '''
  * The Recognize Anything Model (RAM)
- * Written by Xinyu Huang
+ * Written by Xinyu Huang updated by Divyansh
 '''
 import argparse
 import numpy as np
