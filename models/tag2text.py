@@ -152,7 +152,7 @@ class RAM(nn.Module):
             self.class_threshold[key] = value
 
     def load_tag_list(self, tag_list_file):
-        with open(tag_list_file, 'r') as f:
+        with open(tag_list_file, 'r', encoding="utf-8") as f:
             tag_list = f.read().splitlines()
         tag_list = np.array(tag_list)
         return tag_list
