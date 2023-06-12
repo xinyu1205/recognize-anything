@@ -144,7 +144,7 @@ class RAM(nn.Module):
         tie_encoder_decoder_weights(self.tag_encoder, self.tagging_head, '',
                                     ' ')
         self.image_proj = nn.Linear(vision_width, 512)
-        self.label_embed = nn.Parameter(torch.load('data/textual_label_embedding.pth',map_location='cpu').float())
+        self.label_embed = nn.Parameter(torch.load(f'{CONFIG_PATH}/data/textual_label_embedding.pth',map_location='cpu').float())
 
         # adjust thresholds for some tags
         self.class_threshold = torch.ones(self.num_class) * self.threshold
