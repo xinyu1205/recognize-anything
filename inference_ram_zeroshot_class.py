@@ -76,4 +76,4 @@ if __name__ == "__main__":
     image = transform(raw_image).unsqueeze(0).to(device)
 
     res = inference(image, model)
-    print("Image Tags: ", res[0])
+    print("Image Tags: ", res)
