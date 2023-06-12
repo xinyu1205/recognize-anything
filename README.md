@@ -1,4 +1,4 @@
-# :label: Recognize Anything: A Strong Image Tagging Model & Tag2Text: Guiding Vision-Language Model via Image Tagging
+# <font size=> :label: Recognize Anything: A Strong Image Tagging Model & Tag2Text: Guiding Vision-Language Model via Image Tagging </font>
 
 Official PyTorch Implementation of the <a href="https://recognize-anything.github.io/">Recognize Anything Model (RAM)</a> and the <a href="https://tag2text.github.io/">Tag2Text Model</a>.
 
@@ -6,24 +6,19 @@ Official PyTorch Implementation of the <a href="https://recognize-anything.githu
 - Tag2Text is a vision-language model guided by tagging, which can support caption, retrieval and tagging.
 
 
+Welcome to try our [RAM & Tag2Text web Demo! 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text)
+
+
 Both Tag2Text and RAM exihibit strong recognition ability. 
 We have combined Tag2Text and RAM with localization models (Grounding-DINO and SAM) and developed a strong visual semantic analysis pipeline in the [Grounded-SAM] project (https://github.com/IDEA-Research/Grounded-Segment-Anything).
 
 ![](./images/ram_grounded_sam.jpg)
 
-## :sun_with_face: Helpful Tutorial
-
-- :mushroom: [[Try our RAM & Tag2Text web Demo! 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text)]
-- :apple:  [[Access RAM Homepage](https://recognize-anything.github.io/)]
-- :grapes: [[Access Tag2Text Homepage](https://tag2text.github.io/)]
-- :sunflower:  [[Read RAM arXiv Paper](https://arxiv.org/abs/2306.03514)]
-- :rose: [[Read Tag2Text arXiv Paper](https://arxiv.org/abs/2303.05657)]
-
-
 
 
 ## :bulb: Highlight
-**Recognition and localization are two foundation computer vision tasks.**
+
+<!-- **Recognition and localization are two foundation computer vision tasks.**
 - **The Segment Anything Model (SAM)** excels in **localization capabilities**, while it falls short when it comes to **recognition tasks**.
 - **The Recognize Anything Model (RAM) and Tag2Text** exhibits **exceptional recognition abilities**, in terms of **both accuracy and scope**.
 
@@ -33,7 +28,23 @@ We have combined Tag2Text and RAM with localization models (Grounding-DINO and S
     <td class="tg-c3ow"><img src="images/localization_and_recognition.jpg" align="center" width="800" ></td>
   </tr>
 </table>
+</p> -->
+
+<!-- **Recognition and localization are two foundation computer vision tasks.** -->
+- **The Recognize Anything Model (RAM) and Tag2Text** exhibits **exceptional recognition abilities**, in terms of **both accuracy and scope**.
+- Especially, **RAM’s zero-shot generalization is superior to ML-Decoder’s full supervision on [OpenImages-common test dataset](./data/test_file/openimages_common_218class.txt).**
+
+
+<p align="center">
+ <table class="tg">
+  <tr>
+    <td class="tg-c3ow"><img src="images/experiment_comparison.png" align="center" width="800" ></td>
+  </tr>
+  Green color means fully supervised learning and Blue color means zero-shot performance.
+</table>
 </p>
+
+
 
 
 <details close>
@@ -42,8 +53,8 @@ Tag2Text for Vision-Language Tasks.
 </font></summary>
 
 - **Tagging.** Without manual annotations, Tag2Text achieves **superior** image tag recognition ability of [**3,429**](./data/tag_list.txt) commonly human-used categories.
-- **Efficient.** Tagging guidance effectively enhances the performance of vision-language models on both **generation-based** and **alignment-based** tasks.
-- **Controllable.** Tag2Text permits users to input **desired tags**, providing the flexibility in composing corresponding texts based on the input tags.
+- **Captioning.** Tag2Text integrates **recognized image tags** into text generation as **guiding elements**, resulting in the generation with **more comprehensive text descriptions**. 
+- **Retrieval.** Tag2Text provides **tags** as **additional visible alignment indicators.**
 
 
 <p align="center">
@@ -61,8 +72,8 @@ Tag2Text for Vision-Language Tasks.
 Advancements of RAM on Tag2Text.
 </font></summary>
 
-- **Accuracy.** RAM utilizes a data engine to generate additional annotations and clean incorrect ones, resulting higher accuracy compared to Tag2Text.
-- **Scope.** Tag2Text recognizes 3,400+ fixed tags. RAM upgrades the number to 6,400+, covering more valuable categories. With open-set capability, RAM is feasible to recognize any common category.
+- **Accuracy.** RAM utilizes a **data engine** to **generate** additional annotations and **clean** incorrect ones, resulting **higher accuracy** compared to Tag2Text.
+- **Scope.** Tag2Text recognizes 3,400+ fixed tags. RAM upgrades the number to **[6,400+](./data/ram_tag_list.txt)**, covering **more valuable categories**. With **open-set capability**, RAM is feasible to recognize **any common category**.
 
 <p align="center">
  <table class="tg">
@@ -76,14 +87,15 @@ Advancements of RAM on Tag2Text.
 </details>
 
 
-## :sparkles: Highlight Projects with other Models
+
+<!-- ## :sparkles: Highlight Projects with other Models
 - [Tag2Text/RAM with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) is trong and general pipeline for visual semantic analysis, which can automatically **recognize**, detect, and segment for an image!
 - [Ask-Anything](https://github.com/OpenGVLab/Ask-Anything) is a multifunctional video question answering tool. Tag2Text provides powerful tagging and captioning capabilities as a fundamental component.
-- [Prompt-can-anything](https://github.com/positive666/Prompt-Can-Anything) is a gradio web library that integrates SOTA multimodal large models, including Tag2text as the core model for graphic understanding
+- [Prompt-can-anything](https://github.com/positive666/Prompt-Can-Anything) is a gradio web library that integrates SOTA multimodal large models, including Tag2text as the core model for graphic understanding -->
 
 
 
-
+<!-- 
 ## :fire: News
 
 - **`2023/06/08`**: We release the [Recognize Anything Model (RAM) Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text), checkpoints and inference code!
@@ -92,8 +104,7 @@ Advancements of RAM on Tag2Text.
 - **`2023/05/20`**: Tag2Text is combined with [VideoChat](https://github.com/OpenGVLab/Ask-Anything).
 - **`2023/04/20`**: We marry Tag2Text with with [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything).
 - **`2023/04/10`**: Code and checkpoint is available Now!
-- **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text) is available on Hugging Face Space! 
-
+- **`2023/03/14`**: [Tag2Text web demo 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text) is available on Hugging Face Space!  -->
 
 
 
@@ -216,7 +227,9 @@ If you find our work to be useful for your research, please consider citing.
 ## :hearts: Acknowledgements
 This work is done with the help of the amazing code base of [BLIP](https://github.com/salesforce/BLIP), thanks very much!
 
-We also want to thank @Cheng Rui @Shilong Liu @Ren Tianhe for their help in [marrying Tag2Text with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything).
+We want to thank @Cheng Rui @Shilong Liu @Ren Tianhe for their help in [marrying RAM/Tag2Text with Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything).
+
+We also want to thank [Ask-Anything](https://github.com/OpenGVLab/Ask-Anything), [Prompt-can-anything](https://github.com/positive666/Prompt-Can-Anything) for  combining RAM/Tag2Text, which greatly expands the application boundaries of RAM/Tag2Text.
 
 
 
