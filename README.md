@@ -159,7 +159,21 @@ python inference_ram.py  --image images/1641173_2291260800.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
 </pre>
 
-**RAM Zero-Shot Inference is Comming!** 
+### **RAM Inference on Zero-Shot Categories** ##
+1. Install the dependencies, run:
+
+<pre/>pip install -r requirements.txt</pre> 
+
+2. Download RAM pretrained checkpoints.
+
+3. Custom recognition categories in [build_zeroshot_label_embedding()](./models/zs_utils.py) 
+
+4. Get the tags of the images:
+<pre/>
+python inference_ram_zeroshot_class.py  --image images/zeroshot_example.jpg \
+--pretrained pretrained/ram_swin_large_14m.pth
+</pre>
+
 
 ### **Tag2Text Inference** ##
 
