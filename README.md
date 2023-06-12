@@ -1,4 +1,4 @@
-# <font size=7> :label: Recognize Anything: A Strong Image Tagging Model & Tag2Text: Guiding Vision-Language Model via Image Tagging </font>
+# <font size=8> :label: Recognize Anything: A Strong Image Tagging Model & Tag2Text: Guiding Vision-Language Model via Image Tagging </font>
 
 Official PyTorch Implementation of the <a href="https://recognize-anything.github.io/">Recognize Anything Model (RAM)</a> and the <a href="https://tag2text.github.io/">Tag2Text Model</a>.
 
@@ -40,7 +40,7 @@ We have combined Tag2Text and RAM with localization models (Grounding-DINO and S
   <tr>
     <td class="tg-c3ow"><img src="images/experiment_comparison.png" align="center" width="800" ></td>
   </tr>
-  <p align="center">Green color means fully supervised learning and Blue color means zero-shot performance.</p>
+  <p align="center">(Green color means fully supervised learning and Blue color means zero-shot performance.)</p>
 </table>
 </p>
 
