@@ -177,7 +177,7 @@ python inference_ram.py  --image images/1641173_2291260800.jpg \
 
 2. Download RAM pretrained checkpoints.
 
-3. Custom recognition categories in [build_zeroshot_label_embedding()](./models/zs_utils.py) 
+3. Custom recognition categories in [build_zeroshot_label_embedding](./models/zs_utils.py). 
 
 4. Get the tags of the images:
 <pre/>
