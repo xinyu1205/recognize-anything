@@ -149,7 +149,7 @@ Advancements of RAM on Tag2Text.
       <td>Tag2Text-14M</td>
       <td>Swin-Base</td>
       <td>COCO, VG, SBU, CC-3M, CC-12M</td>
-      <td>Support caption, retrieval and tagging.</td>
+      <td>Support comprehensive captioning and tagging.</td>
       <td><a href="https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text/blob/main/tag2text_swin_14m.pth">Download  link</a></td>
     </tr>
   </tbody>
