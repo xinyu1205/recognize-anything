@@ -32,7 +32,7 @@ We have combined Tag2Text and RAM with localization models (Grounding-DINO and S
 
 <!-- **Recognition and localization are two foundation computer vision tasks.** -->
 - **The Recognize Anything Model (RAM) and Tag2Text** exhibits **exceptional recognition abilities**, in terms of **both accuracy and scope**.
-- Especially, **RAM’s zero-shot generalization is superior to ML-Decoder’s full supervision on [OpenImages-common categories test dataset](./data/test_file/openimages_common_218class.txt).**
+- Especially, **RAM’s zero-shot generalization is superior to ML-Decoder’s full supervision on [OpenImages-common categories test dataset](./data/test_file/openimages_common_214class.txt) (subset of OpenImages V6).**
 
 
 <p align="center">
