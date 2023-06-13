@@ -1,5 +1,6 @@
 # <font size=8> :label: Recognize Anything: A Strong Image Tagging Model & Tag2Text: Guiding Vision-Language Model via Image Tagging </font>
 
+
 Official PyTorch Implementation of the <a href="https://recognize-anything.github.io/">Recognize Anything Model (RAM)</a> and the <a href="https://tag2text.github.io/">Tag2Text Model</a>.
 
 - RAM is an image tagging model, which can recognize any common category with high accuracy.
