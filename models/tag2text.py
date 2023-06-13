@@ -144,7 +144,7 @@ class RAM(nn.Module):
         tie_encoder_decoder_weights(self.tag_encoder, self.tagging_head, '',
                                     ' ')
         self.image_proj = nn.Linear(vision_width, 512)
-        self.label_embed = nn.Parameter(torch.load('data/textual_label_embedding.pth',map_location='cpu').float())
+        self.label_embed = nn.Parameter(torch.load(f'{CONFIG_PATH}/data/textual_label_embedding.pth',map_location='cpu').float())
 
         # adjust thresholds for some tags
         self.class_threshold = torch.ones(self.num_class) * self.threshold
@@ -209,6 +209,50 @@ class RAM(nn.Module):
 
 
         return tag_output, tag_output_chinese
+
+    def generate_tag_zeroshot(self,
+                 image,
+                 threshold=0.68,
+                 tag_input=None,
+                 ):
+            
+        label_embed = torch.nn.functional.relu(self.wordvec_proj(self.label_embed))
+
+        image_embeds = self.image_proj(self.visual_encoder(image))
+        image_atts = torch.ones(image_embeds.size()[:-1],
+                                dtype=torch.long).to(image.device)
+
+        # recognized image tags using image-tag recogntiion decoder
+        image_cls_embeds = image_embeds[:, 0, :]
+        image_spatial_embeds = image_embeds[:, 1:, :]
+
+        bs = image_spatial_embeds.shape[0]
+        label_embed = label_embed.unsqueeze(0).repeat(bs, 1, 1)
+        tagging_embed = self.tagging_head(
+            encoder_embeds=label_embed,
+            encoder_hidden_states=image_embeds,
+            encoder_attention_mask=image_atts,
+            return_dict=False,
+            mode='tagging',
+        )
+
+        logits = self.fc(tagging_embed[0]).squeeze(-1)
+
+        targets = torch.where(
+            torch.sigmoid(logits) > self.class_threshold.to(image.device),
+            torch.tensor(1.0).to(image.device),
+            torch.zeros(self.num_class).to(image.device))
+
+        tag = targets.cpu().numpy()
+        tag[:,self.delete_tag_index] = 0
+        tag_output = []
+        for b in range(bs):
+            index = np.argwhere(tag[b] == 1)
+            token = self.tag_list[index].squeeze(axis=1)
+            tag_output.append(' | '.join(token))
+
+        return tag_output
+
 
 
 class Tag2Text_Caption(nn.Module):
