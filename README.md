@@ -32,7 +32,7 @@ We have combined Tag2Text and RAM with localization models (Grounding-DINO and S
 
 <!-- **Recognition and localization are two foundation computer vision tasks.** -->
 - **The Recognize Anything Model (RAM) and Tag2Text** exhibits **exceptional recognition abilities**, in terms of **both accuracy and scope**.
-- Especially, **RAM’s zero-shot generalization is superior to ML-Decoder’s full supervision on [OpenImages-common categories test dataset](./data/test_file/openimages_common_218class.txt).**
+- Especially, **RAM’s zero-shot generalization is superior to ML-Decoder’s full supervision on [OpenImages-common categories test dataset](./data/test_file/openimages_common_214class.txt) (subset of OpenImages V6).**
 
 
 <p align="center">
@@ -170,18 +170,18 @@ python inference_ram.py  --image images/1641173_2291260800.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
 </pre>
 
-### **RAM Inference on Zero-Shot Categories** ##
+### **RAM Inference on Unseen Categories (Open-Set)** ##
 1. Install the dependencies, run:
 
 <pre/>pip install -r requirements.txt</pre> 
 
 2. Download RAM pretrained checkpoints.
 
-3. Custom recognition categories in [build_zeroshot_label_embedding](./models/zs_utils.py). 
+3. Custom recognition categories in [build_openset_label_embedding](./models/openset_utils.py). 
 
 4. Get the tags of the images:
 <pre/>
-python inference_ram_zeroshot_class.py  --image images/zeroshot_example.jpg \
+python inference_ram_openset.py  --image images/openset_example.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
 </pre>
 
