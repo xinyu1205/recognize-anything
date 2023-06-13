@@ -290,7 +290,7 @@ openimages_rare_unseen = ['Aerial photography',
 'Zeppelin']
 
 
-def build_zeroshot_label_embedding():
+def build_openset_label_embedding():
     categories = openimages_rare_unseen
     model, _ = clip.load("ViT-B/16")
     templates = multiple_templates
@@ -298,7 +298,7 @@ def build_zeroshot_label_embedding():
     run_on_gpu = torch.cuda.is_available()
 
     with torch.no_grad():
-        zeroshot_label_embedding = []
+        openset_label_embedding = []
         for category in categories:
             texts = [
                 template.format(
@@ -318,13 +318,13 @@ def build_zeroshot_label_embedding():
             text_embeddings /= text_embeddings.norm(dim=-1, keepdim=True)
             text_embedding = text_embeddings.mean(dim=0)
             text_embedding /= text_embedding.norm()
-            zeroshot_label_embedding.append(text_embedding)
-        zeroshot_label_embedding = torch.stack(zeroshot_label_embedding, dim=1)
+            openset_label_embedding.append(text_embedding)
+        openset_label_embedding = torch.stack(openset_label_embedding, dim=1)
         if run_on_gpu:
-            zeroshot_label_embedding = zeroshot_label_embedding.cuda()
+            openset_label_embedding = openset_label_embedding.cuda()
 
-    zeroshot_label_embedding = zeroshot_label_embedding.t()
-    return zeroshot_label_embedding, categories
+    openset_label_embedding = openset_label_embedding.t()
+    return openset_label_embedding, categories
 
 
 

@@ -1,5 +1,5 @@
 '''
- * The Recognize Anything Model (RAM) inference on zeroshot classes
+ * The Recognize Anything Model (RAM) inference on unseen classes
  * Written by Xinyu Huang
 '''
 import argparse
@@ -12,7 +12,7 @@ import torchvision.transforms as transforms
 from PIL import Image
 from models.tag2text import ram
 
-from models.zs_utils import build_zeroshot_label_embedding
+from models.openset_utils import build_openset_label_embedding
 from torch import nn
 
 parser = argparse.ArgumentParser(
@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('--image',
                     metavar='DIR',
                     help='path to dataset',
-                    default='images/zeroshot_example.jpg')
+                    default='images/openset_example.jpg')
 parser.add_argument('--pretrained',
                     metavar='DIR',
                     help='path to pretrained model',
@@ -34,7 +34,7 @@ parser.add_argument('--image-size',
 def inference(image, model):
 
     with torch.no_grad():
-        tags = model.generate_tag_zeroshot(image)
+        tags = model.generate_tag_openset(image)
 
     return tags[0]
 
@@ -56,16 +56,16 @@ if __name__ == "__main__":
                              image_size=args.image_size,
                              vit='swin_l')
     
-    #######set zero shot interference
-    zeroshot_label_embedding, zeroshot_categories = build_zeroshot_label_embedding()
+    #######set openset interference
+    openset_label_embedding, openset_categories = build_openset_label_embedding()
 
-    model.tag_list = np.array(zeroshot_categories)
+    model.tag_list = np.array(openset_categories)
     
-    model.label_embed = nn.Parameter(zeroshot_label_embedding.float())
+    model.label_embed = nn.Parameter(openset_label_embedding.float())
 
-    model.num_class = len(zeroshot_categories)
-    # the threshold for zero shot categories is often lower
-    model.class_threshold = torch.ones(model.num_class) * 0.5
+    model.num_class = len(openset_categories)
+    # the threshold for unseen categories is often lower
+    model.class_threshold = torch.ones(model.num_class) * 0.576
     #######
 
     model.eval()

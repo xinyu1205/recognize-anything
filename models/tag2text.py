@@ -210,7 +210,7 @@ class RAM(nn.Module):
 
         return tag_output, tag_output_chinese
 
-    def generate_tag_zeroshot(self,
+    def generate_tag_openset(self,
                  image,
                  threshold=0.68,
                  tag_input=None,
