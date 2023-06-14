@@ -48,7 +48,7 @@ RAM significantly improves the tagging ability based on the Tag2text framework.
 
 ## :sunrise: Highlight of Tag2text
 Tag2Text is an efficient and controllable vision-language model with tagging guidance.
-- **Tagging.** Tag2Text recognizes 3,400+ commonly human-used categories without manual annotations.
+- **Tagging.** Tag2Text recognizes **[3,400+](./data/tag_list.txt)** commonly human-used categories without manual annotations.
 - **Captioning.** Tag2Text integrates **tags information** into text generation as the **guiding elements**, resulting in **more controllable and comprehensive descriptions**. 
 - **Retrieval.** Tag2Text provides **tags** as **additional visible alignment indicators** for image-text retrieval. 
 
