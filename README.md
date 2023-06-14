@@ -43,7 +43,7 @@ RAM is a strong image tagging model, which can recognize any common category wit
 
 RAM significantly improves the tagging ability based on the Tag2text framework.
 - **Accuracy.** RAM utilizes a **data engine** to **generate** additional annotations and **clean** incorrect ones,  **higher accuracy** compared to Tag2Text.
-- **Scope.** RAM upgrades the number of fixed tags from  3,400+ to **[6,400+](./data/ram_tag_list.txt)**, covering **more valuable categories**.
+- **Scope.** RAM upgrades the number of fixed tags from  3,400+ to **[6,400+](./data/ram_tag_list.txt)** (synonymous reduction to 4,500+ different semantic tags), covering **more valuable categories**.
   Moreover, RAM is equipped with **open-set capability**, feasible to recognize tags not seen during training
 
 ## :sunrise: Highlight of Tag2text
