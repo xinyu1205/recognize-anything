@@ -130,54 +130,76 @@ Tag2Text is an efficient and controllable vision-language model with tagging gui
 
 
 ## :running: Model Inference
+
+### **Preparation**
+
+1. Install dependencies:
+
+```bash
+pip install -r requirements.txt 
+```
+
+2. Download pretrained checkpoints and put them under `pretrained/`.
+
+3. To infer on `openimages_common_214` or `openimages_rare_200`, you will need to download 125,436 OpenImages V6 test images from official site, and put them under `data/openimages_common_214/imgs/` or `data/openimages_rare_200/imgs/` respectively.
+
 ### **RAM Inference** ##
-1. Install the dependencies, run:
 
-<pre/>pip install -r requirements.txt</pre> 
+**Inference on a single image**
 
-2. Download RAM pretrained checkpoints.
+```bash
+python inference_ram.py --image-path images/1641173_2291260800.jpg --output-dir ./output/run_1
+```
 
-3. Get the English and Chinese outputs of the images:
-<pre/>
-python inference_ram.py  --image images/1641173_2291260800.jpg \
---pretrained pretrained/ram_swin_large_14m.pth
-</pre>
+**Batchified inference**
+
+```bash
+python inference_ram.py --dataset openimages_common_214 --output-dir ./output/run_2
+```
+
+**Open-set inference**
+
+```bash
+python inference_ram.py --open-set --dataset openimages_rare_200 --output-dir ./output/run_3
+```
+
+**Inference on custom data**
+
+Set up your dataset following `data/openimages_common_214` and `data/openimages_rare_200`.
+
+The folder structure should be like:
+
+```
+- mydataset/
+  - imgs/ (required)
+  - mydataset.txt (required)
+  - mydataset_taglist.txt (optional)
+```
+
+`mydataset_taglist.txt` is optional. It specifies a subset of our label system to infer. But in open-set mode, it is necessary and should contain unseen tags you want to infer.
+
+Afterwards, you are able to pass "mydataset" to `--dataset` option to infer on it. 
 
 
-### **RAM Inference on Unseen Categories (Open-Set)** ##
-1. Install the dependencies, run:
+**Notes**
 
-<pre/>pip install -r requirements.txt</pre> 
+- For threshold option, please refer to `inference_ram.py`.
 
-2. Download RAM pretrained checkpoints.
-
-3. Custom recognition categories in [build_openset_label_embedding](./models/openset_utils.py). 
-
-4. Get the tags of the images:
-<pre/>
-python inference_ram_openset.py  --image images/openset_example.jpg \
---pretrained pretrained/ram_swin_large_14m.pth
-</pre>
-
+- logits will be cached in `output_dir/cache` thus tuning thresholds can be super fast. Meanwhile, you should carefully set `--output-dir` to avoid possible collisions.
 
 ### **Tag2Text Inference** ##
 
-1. Install the dependencies, run:
+- Get tagging and captioning results:
 
-<pre/>pip install -r requirements.txt</pre> 
+  ```bash
+  python inference_tag2text.py --image images/1641173_2291260800.jpg
+  ```
 
-2. Download Tag2Text pretrained checkpoints.
+- Get the tagging and sepcifed captioning results (optional):
 
-3. Get the tagging and captioning results:
-<pre/>
-python inference_tag2text.py  --image images/1641173_2291260800.jpg \
---pretrained pretrained/tag2text_swin_14m.pth
-</pre>
-Or get the tagging and sepcifed captioning results (optional):
-<pre/>python inference_tag2text.py  --image images/1641173_2291260800.jpg \
---pretrained pretrained/tag2text_swin_14m.pth \
---specified-tags "cloud,sky"</pre>
-
+  ```bash
+  python inference_tag2text.py --image images/1641173_2291260800.jpg --specified-tags "cloud,sky"
+  ```
 
 ## :black_nib: Citation
 If you find our work to be useful for your research, please consider citing.

@@ -1,9 +1,8 @@
+from typing import List
 
-
-
+import clip
 import torch
-import torch.nn as nn
-from clip import clip
+from torch import Tensor, device
 
 
 def article(name):
@@ -19,9 +18,7 @@ def processed_name(name, rm_dot=False):
     return res
 
 
-single_template = ["a photo of a {}."]
-
-multiple_templates = [
+templates = [
     "There is {article} {} in the scene.",
     "There is the {} in the scene.",
     "a photo of {article} {} in the scene.",
@@ -88,244 +85,35 @@ multiple_templates = [
 ]
 
 
-openimages_rare_unseen = ['Aerial photography',
-'Aircraft engine',
-'Ale',
-'Aloe',
-'Amphibian',
-'Angling',
-'Anole',
-'Antique car',
-'Arcade game',
-'Arthropod',
-'Assault rifle',
-'Athletic shoe',
-'Auto racing',
-'Backlighting',
-'Bagpipes',
-'Ball game',
-'Barbecue chicken',
-'Barechested',
-'Barquentine',
-'Beef tenderloin',
-'Billiard room',
-'Billiards',
-'Bird of prey',
-'Black swan',
-'Black-and-white',
-'Blond',
-'Boating',
-'Bonbon',
-'Bottled water',
-'Bouldering',
-'Bovine',
-'Bratwurst',
-'Breadboard',
-'Briefs',
-'Brisket',
-'Brochette',
-'Calabaza',
-'Camera operator',
-'Canola',
-'Childbirth',
-'Chordophone',
-'Church bell',
-'Classical sculpture',
-'Close-up',
-'Cobblestone',
-'Coca-cola',
-'Combat sport',
-'Comics',
-'Compact car',
-'Computer speaker',
-'Cookies and crackers',
-'Coral reef fish',
-'Corn on the cob',
-'Cosmetics',
-'Crocodilia',
-'Digital camera',
-'Dishware',
-'Divemaster',
-'Dobermann',
-'Dog walking',
-'Domestic rabbit',
-'Domestic short-haired cat',
-'Double-decker bus',
-'Drums',
-'Electric guitar',
-'Electric piano',
-'Electronic instrument',
-'Equestrianism',
-'Equitation',
-'Erinaceidae',
-'Extreme sport',
-'Falafel',
-'Figure skating',
-'Filling station',
-'Fire apparatus',
-'Firearm',
-'Flatbread',
-'Floristry',
-'Forklift truck',
-'Freight transport',
-'Fried food',
-'Fried noodles',
-'Frigate',
-'Frozen yogurt',
-'Frying',
-'Full moon',
-'Galleon',
-'Glacial landform',
-'Gliding',
-'Go-kart',
-'Goats',
-'Grappling',
-'Great white shark',
-'Gumbo',
-'Gun turret',
-'Hair coloring',
-'Halter',
-'Headphones',
-'Heavy cruiser',
-'Herding',
-'High-speed rail',
-'Holding hands',
-'Horse and buggy',
-'Horse racing',
-'Hound',
-'Hunting knife',
-'Hurdling',
-'Inflatable',
-'Jackfruit',
-'Jeans',
-'Jiaozi',
-'Junk food',
-'Khinkali',
-'Kitesurfing',
-'Lawn game',
-'Leaf vegetable',
-'Lechon',
-'Lifebuoy',
-'Locust',
-'Lumpia',
-'Luxury vehicle',
-'Machine tool',
-'Medical imaging',
-'Melee weapon',
-'Microcontroller',
-'Middle ages',
-'Military person',
-'Military vehicle',
-'Milky way',
-'Miniature Poodle',
-'Modern dance',
-'Molluscs',
-'Monoplane',
-'Motorcycling',
-'Musical theatre',
-'Narcissus',
-'Nest box',
-'Newsagent\'s shop',
-'Nile crocodile',
-'Nordic skiing',
-'Nuclear power plant',
-'Orator',
-'Outdoor shoe',
-'Parachuting',
-'Pasta salad',
-'Peafowl',
-'Pelmeni',
-'Perching bird',
-'Performance car',
-'Personal water craft',
-'Pit bull',
-'Plant stem',
-'Pork chop',
-'Portrait photography',
-'Primate',
-'Procyonidae',
-'Prosciutto',
-'Public speaking',
-'Racewalking',
-'Ramen',
-'Rear-view mirror',
-'Residential area',
-'Ribs',
-'Rice ball',
-'Road cycling',
-'Roller skating',
-'Roman temple',
-'Rowing',
-'Rural area',
-'Sailboat racing',
-'Scaled reptile',
-'Scuba diving',
-'Senior citizen',
-'Shallot',
-'Shinto shrine',
-'Shooting range',
-'Siberian husky',
-'Sledding',
-'Soba',
-'Solar energy',
-'Sport climbing',
-'Sport utility vehicle',
-'Steamed rice',
-'Stemware',
-'Sumo',
-'Surfing Equipment',
-'Team sport',
-'Touring car',
-'Toy block',
-'Trampolining',
-'Underwater diving',
-'Vegetarian food',
-'Wallaby',
-'Water polo',
-'Watercolor paint',
-'Whiskers',
-'Wind wave',
-'Woodwind instrument',
-'Yakitori',
-'Zeppelin']
-
-
-def build_openset_label_embedding():
-    categories = openimages_rare_unseen
-    model, _ = clip.load("ViT-B/16")
-    templates = multiple_templates
-
-    run_on_gpu = torch.cuda.is_available()
+def build_openset_label_embedding(
+    categories: List[str],
+    device: device
+) -> Tensor:
+    model, _ = clip.load("ViT-B/16", device=device)
 
     with torch.no_grad():
         openset_label_embedding = []
         for category in categories:
             texts = [
                 template.format(
-                    processed_name(category, rm_dot=True), article=article(category)
-                )
-                for template in templates
+                    processed_name(category, rm_dot=True),
+                    article=article(category)
+                ) for template in templates
             ]
             texts = [
-                "This is " + text if text.startswith("a") or text.startswith("the") else text
+                "This is " + text
+                if text.startswith("a") or text.startswith("the")
+                else text
                 for text in texts
             ]
-            texts = clip.tokenize(texts)  # tokenize
-            if run_on_gpu:
-                texts = texts.cuda()
-                model = model.cuda()
+            texts = clip.tokenize(texts).to(device)  # tokenize
             text_embeddings = model.encode_text(texts)
             text_embeddings /= text_embeddings.norm(dim=-1, keepdim=True)
             text_embedding = text_embeddings.mean(dim=0)
             text_embedding /= text_embedding.norm()
             openset_label_embedding.append(text_embedding)
         openset_label_embedding = torch.stack(openset_label_embedding, dim=1)
-        if run_on_gpu:
-            openset_label_embedding = openset_label_embedding.cuda()
+        openset_label_embedding = openset_label_embedding.to(device)
 
     openset_label_embedding = openset_label_embedding.t()
-    return openset_label_embedding, categories
-
-
-
-
+    return openset_label_embedding
