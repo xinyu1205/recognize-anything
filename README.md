@@ -141,7 +141,7 @@ pip install -r requirements.txt
 
 2. Download pretrained checkpoints and put them under `pretrained/`.
 
-3. To infer on `openimages_common_214` or `openimages_rare_200`, you will need to download 125,436 OpenImages V6 test images from official site, and put them under `data/openimages_common_214/imgs/` or `data/openimages_rare_200/imgs/` respectively.
+3. (Optional) If you want to infer on public datasets, download images from their official sites and put them under `data/{dataset_name}/imgs/`.
 
 ### **RAM Inference** ##
 
@@ -151,7 +151,7 @@ pip install -r requirements.txt
 python inference_ram.py --image-path images/1641173_2291260800.jpg --output-dir ./output/run_1
 ```
 
-**Batchified inference**
+**Batch inference**
 
 ```bash
 python inference_ram.py --dataset openimages_common_214 --output-dir ./output/run_2

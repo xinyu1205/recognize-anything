@@ -135,6 +135,3 @@ outputs/
 # IDE
 .idea/
 .vscode/
-
-# dataset images
-data/*/imgs
