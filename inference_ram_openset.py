@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     model.num_class = len(openset_categories)
     # the threshold for unseen categories is often lower
-    model.class_threshold = torch.ones(model.num_class) * 0.576
+    model.class_threshold = torch.ones(model.num_class) * 0.5
     #######
 
     model.eval()
