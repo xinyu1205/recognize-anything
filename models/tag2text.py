@@ -11,7 +11,6 @@ from torch import nn
 from models.bert import BertConfig, BertModel, BertLMHeadModel
 from models.vit import VisionTransformer
 from models.swin_transformer import SwinTransformer
-from data.ram_tag_list_threshold import ram_class_threshold
 
 from models.utils import *
 
@@ -148,6 +147,9 @@ class RAM(nn.Module):
 
         # adjust thresholds for some tags
         self.class_threshold = torch.ones(self.num_class) * self.threshold
+        ram_class_threshold_path = f'{CONFIG_PATH}/data/ram_tag_list_threshold.txt'
+        with open(ram_class_threshold_path, 'r', encoding='utf-8') as f:
+            ram_class_threshold = [float(s.strip()) for s in f]
         for key,value in enumerate(ram_class_threshold):
             self.class_threshold[key] = value
 
