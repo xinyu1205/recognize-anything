@@ -10,7 +10,7 @@ import torch
 import torchvision.transforms as transforms
 
 from PIL import Image
-from models.tag2text import ram
+from ram.models import ram
 
 parser = argparse.ArgumentParser(
     description='Tag2Text inferece for tagging and captioning')

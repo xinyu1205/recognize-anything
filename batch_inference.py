@@ -9,7 +9,7 @@ import torch
 import torchvision.transforms as transforms
 from PIL import Image
 
-from models.tag2text import tag2text_caption, ram
+from ram.models import tag2text_caption, ram
 
 
 def parse_args():
