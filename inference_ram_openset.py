@@ -11,6 +11,7 @@ import torchvision.transforms as transforms
 
 from PIL import Image
 from ram.models import ram
+from ram import inference_ram_openset as inference
 
 from ram.utils import build_openset_label_embedding
 from torch import nn
@@ -30,13 +31,6 @@ parser.add_argument('--image-size',
                     type=int,
                     metavar='N',
                     help='input image size (default: 448)')
-
-def inference(image, model):
-
-    with torch.no_grad():
-        tags = model.generate_tag_openset(image)
-
-    return tags[0]
 
 
 if __name__ == "__main__":
