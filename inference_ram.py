@@ -10,7 +10,9 @@ import torch
 import torchvision.transforms as transforms
 
 from PIL import Image
-from models.tag2text import ram
+from ram.models import ram
+from ram import inference_ram as inference
+
 
 parser = argparse.ArgumentParser(
     description='Tag2Text inferece for tagging and captioning')
@@ -27,13 +29,6 @@ parser.add_argument('--image-size',
                     type=int,
                     metavar='N',
                     help='input image size (default: 448)')
-
-def inference(image, model):
-
-    with torch.no_grad():
-        tags, tags_chinese = model.generate_tag(image)
-
-    return tags[0],tags_chinese[0]
 
 
 if __name__ == "__main__":

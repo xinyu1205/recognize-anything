@@ -43,12 +43,12 @@ RAM is a strong image tagging model, which can recognize any common category wit
 
 RAM significantly improves the tagging ability based on the Tag2text framework.
 - **Accuracy.** RAM utilizes a **data engine** to **generate** additional annotations and **clean** incorrect ones,  **higher accuracy** compared to Tag2Text.
-- **Scope.** RAM upgrades the number of fixed tags from  3,400+ to **[6,400+](./data/ram_tag_list.txt)** (synonymous reduction to 4,500+ different semantic tags), covering **more valuable categories**.
+- **Scope.** RAM upgrades the number of fixed tags from  3,400+ to **[6,400+](./ram/data/ram_tag_list.txt)** (synonymous reduction to 4,500+ different semantic tags), covering **more valuable categories**.
   Moreover, RAM is equipped with **open-set capability**, feasible to recognize tags not seen during training
 
 ## :sunrise: Highlight of Tag2text
 Tag2Text is an efficient and controllable vision-language model with tagging guidance.
-- **Tagging.** Tag2Text recognizes **[3,400+](./data/tag_list.txt)** commonly human-used categories without manual annotations.
+- **Tagging.** Tag2Text recognizes **[3,400+](./ram/data/tag_list.txt)** commonly human-used categories without manual annotations.
 - **Captioning.** Tag2Text integrates **tags information** into text generation as the **guiding elements**, resulting in **more controllable and comprehensive descriptions**. 
 - **Retrieval.** Tag2Text provides **tags** as **additional visible alignment indicators** for image-text retrieval. 
 
@@ -130,14 +130,30 @@ Tag2Text is an efficient and controllable vision-language model with tagging gui
 
 
 ## :running: Model Inference
-### **RAM Inference** ##
-1. Install the dependencies, run:
 
-<pre/>pip install -r requirements.txt</pre> 
+### **Setting Up** ###
+
+1. Install the dependencies::
+
+<pre/>pip install -r requirements.txt</pre>
 
 2. Download RAM pretrained checkpoints.
 
-3. Get the English and Chinese outputs of the images:
+3. (Optional) To use RAM and Tag2Text in other projects, better to install recognize-anything as a package:
+
+```bash
+pip install -e .
+```
+
+Then the RAM and Tag2Text model can be imported in other projects:
+
+```python
+from ram.models import ram, tag2text_caption
+```
+
+### **RAM Inference** ##
+
+Get the English and Chinese outputs of the images:
 <pre/>
 python inference_ram.py  --image images/1641173_2291260800.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
@@ -145,15 +161,8 @@ python inference_ram.py  --image images/1641173_2291260800.jpg \
 
 
 ### **RAM Inference on Unseen Categories (Open-Set)** ##
-1. Install the dependencies, run:
 
-<pre/>pip install -r requirements.txt</pre> 
-
-2. Download RAM pretrained checkpoints.
-
-3. Custom recognition categories in [build_openset_label_embedding](./models/openset_utils.py). 
-
-4. Get the tags of the images:
+Firstly, custom recognition categories in [build_openset_label_embedding](./ram/utils/openset_utils.py), then get the tags of the images:
 <pre/>
 python inference_ram_openset.py  --image images/openset_example.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
@@ -162,13 +171,7 @@ python inference_ram_openset.py  --image images/openset_example.jpg \
 
 ### **Tag2Text Inference** ##
 
-1. Install the dependencies, run:
-
-<pre/>pip install -r requirements.txt</pre> 
-
-2. Download Tag2Text pretrained checkpoints.
-
-3. Get the tagging and captioning results:
+Get the tagging and captioning results:
 <pre/>
 python inference_tag2text.py  --image images/1641173_2291260800.jpg \
 --pretrained pretrained/tag2text_swin_14m.pth

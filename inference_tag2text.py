@@ -10,7 +10,9 @@ import torch
 import torchvision.transforms as transforms
 
 from PIL import Image
-from models.tag2text import tag2text_caption
+from ram.models import tag2text_caption
+from ram import inference_tag2text as inference
+
 
 parser = argparse.ArgumentParser(
     description='Tag2Text inferece for tagging and captioning')
@@ -35,31 +37,6 @@ parser.add_argument('--thre',
 parser.add_argument('--specified-tags',
                     default='None',
                     help='User input specified tags')
-
-
-def inference(image, model, input_tag="None"):
-
-    with torch.no_grad():
-        caption, tag_predict = model.generate(image,
-                                              tag_input=None,
-                                              max_length=50,
-                                              return_tag_predict=True)
-
-    if input_tag == '' or input_tag == 'none' or input_tag == 'None':
-        return tag_predict[0], None, caption[0]
-
-    # If user input specified tags:
-    else:
-        input_tag_list = []
-        input_tag_list.append(input_tag.replace(',', ' | '))
-
-        with torch.no_grad():
-            caption, input_tag = model.generate(image,
-                                                tag_input=input_tag_list,
-                                                max_length=50,
-                                                return_tag_predict=True)
-
-        return tag_predict[0], input_tag[0], caption[0]
 
 
 if __name__ == "__main__":
