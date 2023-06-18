@@ -155,7 +155,7 @@ from ram.models import ram, tag2text_caption
 
 Get the English and Chinese outputs of the images:
 <pre/>
-python inference_ram.py  --image images/1641173_2291260800.jpg \
+python inference_ram.py  --image images/demo/demo1.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
 </pre>
 
@@ -173,11 +173,11 @@ python inference_ram_openset.py  --image images/openset_example.jpg \
 
 Get the tagging and captioning results:
 <pre/>
-python inference_tag2text.py  --image images/1641173_2291260800.jpg \
+python inference_tag2text.py  --image images/demo/demo1.jpg \
 --pretrained pretrained/tag2text_swin_14m.pth
 </pre>
 Or get the tagging and sepcifed captioning results (optional):
-<pre/>python inference_tag2text.py  --image images/1641173_2291260800.jpg \
+<pre/>python inference_tag2text.py  --image images/demo/demo1.jpg \
 --pretrained pretrained/tag2text_swin_14m.pth \
 --specified-tags "cloud,sky"</pre>
 
