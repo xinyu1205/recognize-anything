@@ -182,6 +182,14 @@ Or get the tagging and sepcifed captioning results (optional):
 --specified-tags "cloud,sky"</pre>
 
 
+### **Batch Inference** ##
+Get the tagging and captioning results on multiple images:
+<pre/>
+python batch_inference.py --image-dir images/demo/ \
+ --pretrained pretrained/tag2text_swin_14m.pth --model-type tag2text
+</pre>
+
+
 ## :black_nib: Citation
 If you find our work to be useful for your research, please consider citing.
 
