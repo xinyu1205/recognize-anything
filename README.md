@@ -1,5 +1,7 @@
 # <font size=8> :label: Recognize Anything & Tag2Text </font>
 
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mhd-medfa/recognize-anything/blob/main/recognize_anything_demo.ipynb)
+
 Official PyTorch Implementation of <a href="https://recognize-anything.github.io/">Recognize Anything: A Strong Image Tagging Model </a> and <a href="https://tag2text.github.io/">Tag2Text: Guiding Vision-Language Model via Image Tagging</a>.
 
 - **Recognize Anything Model(RAM)** is an image tagging model, which can recognize any common category with high accuracy.
