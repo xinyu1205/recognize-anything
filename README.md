@@ -1,5 +1,6 @@
 # <font size=8> :label: Recognize Anything & Tag2Text </font>
 
+[![Web Demo](https://img.shields.io/badge/🤗-HuggingFace%20Space-cyan.svg)](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mhd-medfa/recognize-anything/blob/main/recognize_anything_demo.ipynb)
 
 Official PyTorch Implementation of <a href="https://recognize-anything.github.io/">Recognize Anything: A Strong Image Tagging Model </a> and <a href="https://tag2text.github.io/">Tag2Text: Guiding Vision-Language Model via Image Tagging</a>.
@@ -7,7 +8,7 @@ Official PyTorch Implementation of <a href="https://recognize-anything.github.io
 - **Recognize Anything Model(RAM)** is an image tagging model, which can recognize any common category with high accuracy.
 - **Tag2Text** is a vision-language model guided by tagging, which can support caption, retrieval and tagging.
 
-Welcome to try our [RAM & Tag2Text web Demo! 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text)
+<!-- Welcome to try our [RAM & Tag2Text web Demo! 🤗](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text) -->
 
 Both Tag2Text and RAM exihibit strong recognition ability. 
 We have combined Tag2Text and RAM with localization models (Grounding-DINO and SAM) and developed a strong visual semantic analysis pipeline in the [Grounded-SAM](https://github.com/IDEA-Research/Grounded-Segment-Anything) project.
