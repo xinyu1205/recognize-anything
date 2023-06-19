@@ -1,5 +1,7 @@
 # <font size=8> :label: Recognize Anything & Tag2Text </font>
 
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mhd-medfa/recognize-anything/blob/main/recognize_anything_demo.ipynb)
+
 Official PyTorch Implementation of <a href="https://recognize-anything.github.io/">Recognize Anything: A Strong Image Tagging Model </a> and <a href="https://tag2text.github.io/">Tag2Text: Guiding Vision-Language Model via Image Tagging</a>.
 
 - **Recognize Anything Model(RAM)** is an image tagging model, which can recognize any common category with high accuracy.
@@ -155,7 +157,7 @@ from ram.models import ram, tag2text_caption
 
 Get the English and Chinese outputs of the images:
 <pre/>
-python inference_ram.py  --image images/1641173_2291260800.jpg \
+python inference_ram.py  --image images/demo/demo1.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
 </pre>
 
@@ -173,13 +175,21 @@ python inference_ram_openset.py  --image images/openset_example.jpg \
 
 Get the tagging and captioning results:
 <pre/>
-python inference_tag2text.py  --image images/1641173_2291260800.jpg \
+python inference_tag2text.py  --image images/demo/demo1.jpg \
 --pretrained pretrained/tag2text_swin_14m.pth
 </pre>
 Or get the tagging and sepcifed captioning results (optional):
-<pre/>python inference_tag2text.py  --image images/1641173_2291260800.jpg \
+<pre/>python inference_tag2text.py  --image images/demo/demo1.jpg \
 --pretrained pretrained/tag2text_swin_14m.pth \
 --specified-tags "cloud,sky"</pre>
+
+
+### **Batch Inference** ##
+Get the tagging and captioning results on multiple images:
+<pre/>
+python batch_inference.py --image-dir images/demo/ \
+ --pretrained pretrained/tag2text_swin_14m.pth --model-type tag2text
+</pre>
 
 
 ## :black_nib: Citation
