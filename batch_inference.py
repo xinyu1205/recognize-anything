@@ -6,10 +6,10 @@ import time
 
 import imghdr
 import torch
-import torchvision.transforms as transforms
 from PIL import Image
 
 from ram.models import tag2text_caption, ram
+from ram import get_transform
 
 
 def parse_args():
@@ -150,12 +150,7 @@ def inference(images_dir, image_list, model, image_size, input_tags=None, model_
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
-    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                    std=[0.229, 0.224, 0.225])
-    transform = transforms.Compose([
-        transforms.Resize((image_size, image_size)),
-        transforms.ToTensor(), normalize
-    ])
+    transform = get_transform(image_size=image_size)
 
     if images_dir and os.path.isdir(images_dir):
         for filename in os.listdir(images_dir):
