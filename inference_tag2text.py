@@ -7,11 +7,11 @@ import numpy as np
 import random
 
 import torch
-import torchvision.transforms as transforms
 
 from PIL import Image
 from ram.models import tag2text_caption
 from ram import inference_tag2text as inference
+from ram import get_transform
 
 
 parser = argparse.ArgumentParser(
@@ -44,12 +44,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                     std=[0.229, 0.224, 0.225])
-    transform = transforms.Compose([
-        transforms.Resize((args.image_size, args.image_size)),
-        transforms.ToTensor(), normalize
-    ])
+
+    transform = get_transform(image_size=args.image_size)
 
     # delete some tags that may disturb captioning
     # 127: "quarter"; 2961: "back", 3351: "two"; 3265: "three"; 3338: "four"; 3355: "five"; 3359: "one"
@@ -64,9 +60,8 @@ if __name__ == "__main__":
     model.eval()
 
     model = model.to(device)
-    raw_image = Image.open(args.image).convert("RGB").resize(
-        (args.image_size, args.image_size))
-    image = transform(raw_image).unsqueeze(0).to(device)
+
+    image = transform(Image.open(args.image)).unsqueeze(0).to(device)
 
     res = inference(image, model, args.specified_tags)
     print("Model Identified Tags: ", res[0])
