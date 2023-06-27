@@ -132,4 +132,9 @@ dmypy.json
 *.pth
 outputs/
 
+# Editor
 .idea/
+.vscode/
+
+# gradio cache
+gradio_cached_examples/
