@@ -153,20 +153,21 @@ def inference(images_dir, image_list, model, image_size, input_tags=None, model_
     transform = get_transform(image_size=image_size)
 
     if images_dir and os.path.isdir(images_dir):
-        for filename in os.listdir(images_dir):
-            filepath = os.path.join(images_dir, filename)
-            if not imghdr.what(filepath):
-                continue
-            img = Image.open(filepath).convert("RGB")
-            img_tensor = transform(img).unsqueeze(0).to(device)
-            res = generate(model, img_tensor, input_tags, model_type)
-            results.append({
-                "filepath": filepath,
-                "model_identified_tags": res[0],
-                "user_specified_tags": res[1],
-                "image_caption": res[2]
-            })
-            print(results[-1])
+        for root, dirs, files in os.walk(images_dir):
+            for filename in files:
+                filepath = os.path.join(root, filename)
+                if not imghdr.what(filepath):
+                    continue
+                img = Image.open(filepath).convert("RGB")
+                img_tensor = transform(img).unsqueeze(0).to(device)
+                res = generate(model, img_tensor, input_tags, model_type)
+                results.append({
+                    "filepath": filepath,
+                    "model_identified_tags": res[0],
+                    "user_specified_tags": res[1],
+                    "image_caption": res[2]
+                })
+                print(results[-1])
     elif image_list and isinstance(image_list, list):
         for img_path in image_list:
             filepath = os.path.abspath(img_path)
