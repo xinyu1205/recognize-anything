@@ -290,8 +290,9 @@ openimages_rare_unseen = ['Aerial photography',
 'Zeppelin']
 
 
-def build_openset_label_embedding():
-    categories = openimages_rare_unseen
+def build_openset_label_embedding(categories=None):
+    if categories is None:
+        categories = openimages_rare_unseen
     model, _ = clip.load("ViT-B/16")
     templates = multiple_templates
 

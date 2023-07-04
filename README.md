@@ -185,13 +185,43 @@ Or get the tagging and sepcifed captioning results (optional):
 --specified-tags "cloud,sky"</pre>
 
 
-### **Batch Inference** ##
-Get the tagging and captioning results on multiple images:
-<pre/>
-python batch_inference.py --image-dir images/demo/ \
- --pretrained pretrained/tag2text_swin_14m.pth --model-type tag2text
-</pre>
+### **Batch Inference and Evaluation** ##
+We release two datasets `OpenImages-common` (214 seen classes) and `OpenImages-rare` (200 unseen classes). Copy or sym-link test images of [OpenImages v6](https://storage.googleapis.com/openimages/web/download_v6.html) to `datasets/openimages_common_214/imgs/` and `datasets/openimages_rare_200/imgs`.
 
+To evaluate RAM on `OpenImages-common`:
+
+```bash
+python batch_inference.py \
+  --model-type ram \
+  --checkpoint pretrained/ram_swin_large_14m.pth \
+  --dataset openimages_common_214 \
+  --output-dir outputs/ram
+```
+
+To evaluate RAM open-set capability on `OpenImages-rare`:
+
+```bash
+python batch_inference.py \
+  --model-type ram \
+  --checkpoint pretrained/ram_swin_large_14m.pth \
+  --open-set \
+  --dataset openimages_rare_200 \
+  --output-dir outputs/ram_openset
+```
+
+To evaluate Tag2Text on `OpenImages-common`:
+
+```bash
+python batch_inference.py \
+  --model-type tag2text \
+  --checkpoint pretrained/tag2text_swin_14m.pth \
+  --dataset openimages_common_214 \
+  --output-dir outputs/tag2text
+```
+
+Please refer to `batch_inference.py` for more options. To get P/R in table 3 of our paper, pass `--threshold=0.86` for RAM and `--threshold=0.68` for Tag2Text.
+
+To batch inference custom images, you can set up you own datasets following the given two datasets.
 
 ## :black_nib: Citation
 If you find our work to be useful for your research, please consider citing.
