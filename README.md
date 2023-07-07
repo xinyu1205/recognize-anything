@@ -92,8 +92,8 @@ Tag2Text is an efficient and controllable vision-language model with tagging gui
 - [x] Release checkpoints.
 - [x] Release inference code.
 - [x] Release RAM demo and checkpoints.
-- [ ] Release training codes (until July 8st at the latest).
-- [ ] Release training datasets (until July 15st at the latest).
+- [x] Release training codes. (Please refer to [Tag2Text](./ram/models/tag2text.py#L141), RAM is trapped in company processes.)
+- [ ] Release training datasets.
 
 
 
@@ -151,7 +151,7 @@ pip install -e .
 Then the RAM and Tag2Text model can be imported in other projects:
 
 ```python
-from ram.models import ram, tag2text_caption
+from ram.models import ram, tag2text
 ```
 
 ### **RAM Inference** ##

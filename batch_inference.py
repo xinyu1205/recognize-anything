@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
 from ram import get_transform
-from ram.models import ram, tag2text_caption
+from ram.models import ram, tag2text
 from ram.utils import build_openset_label_embedding, get_mAP, get_PR
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -238,7 +238,7 @@ def load_tag2text(
     checkpoint: str,
     input_size: int
 ) -> Module:
-    model = tag2text_caption(
+    model = tag2text(
         pretrained=checkpoint,
         image_size=input_size,
         vit=backbone
