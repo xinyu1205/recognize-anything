@@ -224,7 +224,7 @@ Please refer to `batch_inference.py` for more options. To get P/R in table 3 of 
 To batch inference custom images, you can set up you own datasets following the given two datasets.
 
 
-### :golfing: Model Training/Finetuning
+## :golfing: Model Training/Finetuning
 
 
 ### **Tag2Text** ##
