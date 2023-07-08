@@ -109,6 +109,11 @@ class Tag2Text(nn.Module):
                                   bias=True)
         self.del_selfattention()
 
+        self.tagging_loss_function = AsymmetricLoss(gamma_neg=7,
+                                                    gamma_pos=0,
+                                                    clip=0.05,
+                                                    reduction='sum')
+
         # share weights of the lowest 2-layer of "image-tag interaction encoder" with the "image-tag recogntion decoder"
         tie_encoder_decoder_weights(self.tag_encoder, self.tagging_head, '',
                                     ' ')
@@ -132,6 +137,97 @@ class Tag2Text(nn.Module):
         del self.tagging_head.embeddings
         for layer in self.tagging_head.encoder.layer:
             del layer.attention
+    
+
+    def forward(self, image, caption, tag):
+        """
+        call function as forward
+
+        Args:
+            image: type: torch.Tensor  shape: batch_size * 3 * 384 * 384
+            caption: type: list[string]  len: batch_size
+            tag: type: torch.Tensor   shape: batch * class_num (e.g. 3429)   value: positive sample is 1.0, negative sample is 0.0
+
+        Returns:
+            loss: type: torch.Tensor
+        """
+
+        image_embeds = self.visual_encoder(image)
+        image_atts = torch.onse(image_embeds.size()[:-1],
+                                dtype=torch.long).to(image.device)
+
+        ##================= Image Tagging ================##
+        bs = image_embeds.shape[0]
+        label_embed = self.label_embed.weight.unsqueeze(0).repeat(bs, 1, 1)
+
+        tagging_embed = self.tagging_head(
+            encoder_embeds=label_embed,
+            encoder_hidden_states=image_embeds,
+            encoder_attention_mask=image_atts,
+            return_dict=False,
+            mode='tagging',
+        )
+
+        logits = self.fc(tagging_embed[0])
+
+        loss_tag = self.tagging_loss_function(logits, tag)
+
+        ##================= Image-Tag-Text Generation ================##
+        tag = tag.cpu().numpy()
+        tag_input = []
+        for b in range(bs):
+            index = np.argwhere(tag[b] == 1)
+            token = self.tag_list[index].squeeze(axis=1)
+            tag_input.append(' | '.join(token))
+        
+        # tokenizer input tags
+        tag_input_tokenzier = self.tokenizer(tag_input,
+                                             padding='max_length',
+                                             truncation=True,
+                                             max_length=40,
+                                             return_tensors="pt").to(
+                                                 image.device)
+        encoder_input_ids = tag_input_tokenzier.input_ids
+        encoder_input_ids[:, 0] = self.tokenizer.enc_token_id
+
+        # put input tag into image-tag interaction encoder to interact with image embeddings
+        output_tagembedding = self.tag_encoder(
+            encoder_input_ids,
+            attention_mask=tag_input_tokenzier.attention_mask,
+            encoder_hidden_states=image_embeds,
+            encoder_attention_mask=image_atts,
+            return_dict=True,
+        )
+
+        text = self.tokenizer(caption,
+                              padding='longest',
+                              truncation=True,
+                              max_length=40,
+                                return_tensors="pt").to(
+                                    image.device)
+        
+        decoder_input_ids = text.input_ids
+        decoder_input_ids[:,0] = self.tokenizer.bos_token_id
+
+        decoder_targets = decoder_input_ids.masked_fill(
+            decoder_input_ids == self.tokenizer.pad_token_id, -100) 
+        decoder_targets[:,:self.prompt_length] = -100
+        
+        decoder_output = self.text_decoder(decoder_input_ids, 
+                                           attention_mask = text.attention_mask, 
+                                           encoder_hidden_states = output_tagembedding,
+                                           encoder_attention_mask = None,                  
+                                           labels = decoder_targets,
+                                           return_dict = True,   
+                                          )   
+        
+        loss_t2t = decoder_output.loss
+
+        # balance loss scale
+        loss = loss_t2t + loss_tag/(loss_tag/loss_t2t).detach()
+
+        return loss
+
 
     def generate(self,
                  image,
@@ -150,10 +246,8 @@ class Tag2Text(nn.Module):
 
         # if not user specified tags, recognized image tags using image-tag recogntiion decoder
         if tag_input == None:
-            image_cls_embeds = image_embeds[:, 0, :]
-            image_spatial_embeds = image_embeds[:, 1:, :]
 
-            bs = image_spatial_embeds.shape[0]
+            bs = image_embeds.shape[0]
             label_embed = self.label_embed.weight.unsqueeze(0).repeat(bs, 1, 1)
             tagging_embed = self.tagging_head(
                 encoder_embeds=label_embed,

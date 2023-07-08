@@ -92,8 +92,8 @@ Tag2Text is an efficient and controllable vision-language model with tagging gui
 - [x] Release checkpoints.
 - [x] Release inference code.
 - [x] Release RAM demo and checkpoints.
-- [ ] Release training codes (until July 8st at the latest).
-- [ ] Release training datasets (until July 15st at the latest).
+- [x] Release training codes.
+- [ ] Release training datasets.
 
 
 
@@ -222,6 +222,22 @@ python batch_inference.py \
 Please refer to `batch_inference.py` for more options. To get P/R in table 3 of our paper, pass `--threshold=0.86` for RAM and `--threshold=0.68` for Tag2Text.
 
 To batch inference custom images, you can set up you own datasets following the given two datasets.
+
+
+### :golfing: Model Training/Finetuning
+
+
+### **Tag2Text** ##
+At present, we can only open source [the forward function of Tag2Text](./ram/models/tag2text.py#L141) as much as possible.
+To train/finetune Tag2Text on a custom dataset, you can refer to the complete training codebase of [BLIP](https://github.com/salesforce/BLIP/tree/main) and make the following modifications:
+1. Replace the "models/blip.py" file with the current "[tag2text.py](./ram/models/tag2text.py)" model file;
+2. Load additional tags based on the original dataloader.
+
+### **RAM** ##
+
+The training code of RAM cannot be open-sourced temporarily as it is in the company's process.
+
+
 
 ## :black_nib: Citation
 If you find our work to be useful for your research, please consider citing.
