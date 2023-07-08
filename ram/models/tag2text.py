@@ -16,7 +16,7 @@ from .utils import *
 warnings.filterwarnings("ignore")
 
 
-class Tag2Text_Caption(nn.Module):
+class Tag2Text(nn.Module):
 
     def __init__(self,
                  med_config=f'{CONFIG_PATH}/configs/med_config.json',
@@ -264,8 +264,8 @@ class Tag2Text_Caption(nn.Module):
 
 
 # load Tag2Text pretrained model parameters
-def tag2text_caption(pretrained='', **kwargs):
-    model = Tag2Text_Caption(**kwargs)
+def tag2text(pretrained='', **kwargs):
+    model = Tag2Text(**kwargs)
     if pretrained:
         if kwargs['vit'] == 'swin_b':
             model, msg = load_checkpoint_swinbase(model, pretrained, kwargs)

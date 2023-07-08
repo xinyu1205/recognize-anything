@@ -151,7 +151,7 @@ pip install -e .
 Then the RAM and Tag2Text model can be imported in other projects:
 
 ```python
-from ram.models import ram, tag2text_caption
+from ram.models import ram, tag2text
 ```
 
 ### **RAM Inference** ##
