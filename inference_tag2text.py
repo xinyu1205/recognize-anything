@@ -9,7 +9,7 @@ import random
 import torch
 
 from PIL import Image
-from ram.models import tag2text_caption
+from ram.models import tag2text
 from ram import inference_tag2text as inference
 from ram import get_transform
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     delete_tag_index = [127,2961, 3351, 3265, 3338, 3355, 3359]
 
     #######load model
-    model = tag2text_caption(pretrained=args.pretrained,
+    model = tag2text(pretrained=args.pretrained,
                              image_size=args.image_size,
                              vit='swin_b',
                              delete_tag_index=delete_tag_index)
