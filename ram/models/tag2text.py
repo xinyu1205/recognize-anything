@@ -138,19 +138,15 @@ class Tag2Text(nn.Module):
         for layer in self.tagging_head.encoder.layer:
             del layer.attention
     
-    # At present, we can only open source the forward function of Tag2Text as much as possible.
-    # For training/fintuning Tag2Text on the custom dataset, you can refer to the complete training codebase 
-    # of BLIP (https://github.com/salesforce/BLIP/tree/main) and make the following modifications:
-    # 1. Replace the "models/blip.py" file with current "tag2text.py" model file;
-    # 2. Load additional tags based on original dataloader.
+
     def forward(self, image, caption, tag):
         """
         call function as forward
 
         Args:
-            image: type: torch.Tensor  shape: batch_size * 3 * 224 * 224
+            image: type: torch.Tensor  shape: batch_size * 3 * 384 * 384
             caption: type: list[string]  len: batch_size
-            tag: type: torch.Tensor    shape: batch * class_num (e.g. 3429)
+            tag: type: torch.Tensor   shape: batch * class_num (e.g. 3429)   value: positive sample is 1.0, negative sample is 0.0
 
         Returns:
             loss: type: torch.Tensor
@@ -225,10 +221,10 @@ class Tag2Text(nn.Module):
                                            return_dict = True,   
                                           )   
         
-        loss_ttt = decoder_output.loss
+        loss_t2t = decoder_output.loss
 
         # balance loss scale
-        loss = loss_ttt + loss_tag/(loss_tag/loss_ttt).detach()
+        loss = loss_t2t + loss_tag/(loss_tag/loss_t2t).detach()
 
         return loss
 
