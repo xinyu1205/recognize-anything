@@ -111,8 +111,7 @@ class Tag2Text(nn.Module):
 
         self.tagging_loss_function = AsymmetricLoss(gamma_neg=7,
                                                     gamma_pos=0,
-                                                    clip=0.05,
-                                                    reduction='sum')
+                                                    clip=0.05)
 
         # share weights of the lowest 2-layer of "image-tag interaction encoder" with the "image-tag recogntion decoder"
         tie_encoder_decoder_weights(self.tag_encoder, self.tagging_head, '',
@@ -153,7 +152,7 @@ class Tag2Text(nn.Module):
         """
 
         image_embeds = self.visual_encoder(image)
-        image_atts = torch.onse(image_embeds.size()[:-1],
+        image_atts = torch.ones(image_embeds.size()[:-1],
                                 dtype=torch.long).to(image.device)
 
         ##================= Image Tagging ================##
@@ -215,7 +214,7 @@ class Tag2Text(nn.Module):
         
         decoder_output = self.text_decoder(decoder_input_ids, 
                                            attention_mask = text.attention_mask, 
-                                           encoder_hidden_states = output_tagembedding,
+                                           encoder_hidden_states = output_tagembedding.last_hidden_state,
                                            encoder_attention_mask = None,                  
                                            labels = decoder_targets,
                                            return_dict = True,   
