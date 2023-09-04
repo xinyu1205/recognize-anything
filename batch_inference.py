@@ -17,6 +17,23 @@ from ram.utils import build_openset_label_embedding, get_mAP, get_PR
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
+class _Dataset(Dataset):
+    def __init__(self, imglist, input_size):
+        self.imglist = imglist
+        self.transform = get_transform(input_size)
+
+    def __len__(self):
+        return len(self.imglist)
+
+    def __getitem__(self, index):
+        try:
+            img = Image.open(self.imglist[index]+".jpg")
+        except (OSError, FileNotFoundError, UnidentifiedImageError):
+            img = Image.new('RGB', (10, 10), 0)
+            print("Error loading image:", self.imglist[index])
+        return self.transform(img)
+
+
 def parse_args():
     parser = ArgumentParser()
     # model
@@ -116,23 +133,8 @@ def load_dataset(
     with open(annot_file, "r", encoding="utf-8") as f:
         imglist = [img_root + "/" + line.strip().split(",")[0] for line in f]
 
-    class _Dataset(Dataset):
-        def __init__(self):
-            self.transform = get_transform(input_size)
-
-        def __len__(self):
-            return len(imglist)
-
-        def __getitem__(self, index):
-            try:
-                img = Image.open(imglist[index])
-            except (OSError, FileNotFoundError, UnidentifiedImageError):
-                img = Image.new('RGB', (10, 10), 0)
-                print("Error loading image:", imglist[index])
-            return self.transform(img)
-
     loader = DataLoader(
-        dataset=_Dataset(),
+        dataset=_Dataset(imglist,input_size),
         shuffle=False,
         drop_last=False,
         pin_memory=True,
@@ -344,7 +346,6 @@ if __name__ == "__main__":
         logits = torch.load(logit_file)
 
     else:
-
         # load model
         if args.model_type == "ram":
             model = load_ram(
