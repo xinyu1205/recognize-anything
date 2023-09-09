@@ -136,16 +136,10 @@ Tag2Text is an efficient and controllable vision-language model with tagging gui
 
 ### **Setting Up** ###
 
-1. Install the dependencies::
-
-<pre/>pip install -r requirements.txt</pre>
-
-2. Download RAM pretrained checkpoints.
-
-3. (Optional) To use RAM and Tag2Text in other projects, better to install recognize-anything as a package:
+1. Install recognize-anything as a package:
 
 ```bash
-pip install -e .
+pip install git+https://github.com/xinyu1205/recognize-anything.git
 ```
 
 Then the RAM and Tag2Text model can be imported in other projects:

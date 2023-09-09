@@ -6,4 +6,4 @@ torch
 torchvision
 Pillow
 scipy
-git+https://github.com/openai/CLIP.git
+clip @ git+https://github.com/openai/CLIP.git
