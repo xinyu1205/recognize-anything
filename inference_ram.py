@@ -19,11 +19,11 @@ parser = argparse.ArgumentParser(
 parser.add_argument('--image',
                     metavar='DIR',
                     help='path to dataset',
-                    default='images/1641173_2291260800.jpg')
+                    default='images/demo/demo1.jpg')
 parser.add_argument('--pretrained',
                     metavar='DIR',
                     help='path to pretrained model',
-                    default='pretrained/tag2text_swin_14m.pth')
+                    default='pretrained/ram_swin_large_14m.pth')
 parser.add_argument('--image-size',
                     default=384,
                     type=int,

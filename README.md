@@ -142,6 +142,14 @@ Tag2Text is an efficient and controllable vision-language model with tagging gui
 pip install git+https://github.com/xinyu1205/recognize-anything.git
 ```
 
+2. Or, for development, you may build from source
+
+```bash
+git clone https://github.com/xinyu1205/recognize-anything.git
+cd recognize-anything
+pip install -e .
+```
+
 Then the RAM and Tag2Text model can be imported in other projects:
 
 ```python
@@ -156,6 +164,12 @@ python inference_ram.py  --image images/demo/demo1.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
 </pre>
 
+The output will look like the following:
+
+```
+Image Tags:  armchair | blanket | lamp | carpet | couch | dog | floor | furniture | gray | green | living room | picture frame | pillow | plant | room | sit | stool | wood floor
+图像标签:  扶手椅  | 毯子/覆盖层 | 灯  | 地毯  | 沙发 | 狗 | 地板/地面 | 家具  | 灰色 | 绿色  | 客厅  | 相框  | 枕头  | 植物  | 房间  | 坐/放置/坐落 | 凳子  | 木地板 
+```
 
 ### **RAM Inference on Unseen Categories (Open-Set)** ##
 
