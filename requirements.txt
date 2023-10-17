@@ -1,5 +1,5 @@
 timm==0.4.12
-transformers==4.25.0
+transformers==4.25.1
 fairscale==0.4.4
 pycocoevalcap
 torch
