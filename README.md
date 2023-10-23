@@ -202,7 +202,7 @@ Tag2Text is an efficient and controllable vision-language model with tagging gui
 
 ### **Image Texts and Tags** 
 
-These annotation files come from the [Tag2Text](https://arxiv.org/abs/2303.05657) and [Recognize Anything Model (RAM)](https://recognize-anything.github.io/). Tag2Text automatically extracts image tags from image-text pairs. RAM further augments both tags and texts via an automatic data engine.
+These annotation files come from the [Tag2Text](https://arxiv.org/abs/2303.05657) and [RAM](https://recognize-anything.github.io/). Tag2Text automatically extracts image tags from image-text pairs. RAM further augments both tags and texts via an automatic data engine.
 
 
 | DataSet  | Size    | Images | Texts | Tags  |
@@ -222,7 +222,7 @@ These tag descriptions files come from the [RAM++]() by calling GPT api. You can
 | Tag Descriptions    | Tag List |
 |---------------------|----------|
 | [RAM Tag List](https://huggingface.co/datasets/xinyu1205/recognize-anything-plus-model-tag-descriptions/blob/main/ram_tag_list_4585_llm_tag_descriptions.json)        | [4,585](ram/data/ram_tag_list.txt)    |
-| [OpenImages Uncommon](https://huggingface.co/datasets/xinyu1205/recognize-anything-plus-model-tag-descriptions/blob/main/openimages_rare_200_llm_tag_descriptions.json) | [200](datasets/openimages_rare_200/openimages_rare_200_ram_taglist.txt)      |
+| [OpenImages Uncommon](./datasets/openimages_rare_200/openimages_rare_200_llm_tag_descriptions.json) | [200](datasets/openimages_rare_200/openimages_rare_200_ram_taglist.txt)      |
 
 ## :toolbox: Checkpoints
 
