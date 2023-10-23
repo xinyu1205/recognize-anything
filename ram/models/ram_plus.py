@@ -1,5 +1,5 @@
 '''
- * The Recognize Anything Model (RAM)
+ * The Recognize Anything Plus Model (RAM++)
  * Written by Xinyu Huang
 '''
 import json
@@ -9,22 +9,22 @@ import numpy as np
 import torch
 from torch import nn
 
+import torch.nn.functional as F
 from .bert import BertConfig, BertLMHeadModel, BertModel
 from .swin_transformer import SwinTransformer
 from .utils import *
-import torch.nn.functional as F
 
 warnings.filterwarnings("ignore")
 
 
-class RAM(nn.Module):
+
+class RAM_plus(nn.Module):
     def __init__(self,
                  med_config=f'{CONFIG_PATH}/configs/med_config.json',
                  image_size=384,
                  vit='base',
                  vit_grad_ckpt=False,
                  vit_ckpt_layer=0,
-                 prompt='a picture of ',
                  threshold=0.68,
                  delete_tag_index=[],
                  tag_list=f'{CONFIG_PATH}/data/ram_tag_list.txt',
@@ -69,7 +69,7 @@ class RAM(nn.Module):
                 ape=False,
                 patch_norm=True,
                 use_checkpoint=False)
-            
+
             if stage == 'train_from_scratch':
                 # download from https://github.com/microsoft/Swin-Transformer
                 state_dict = torch.load(vision_config['ckpt'], map_location="cpu")['model']
@@ -80,7 +80,7 @@ class RAM(nn.Module):
                         state_dict[k] = interpolate_relative_pos_embed(state_dict[k], dst_num_pos, param_name=k)
                     elif ('relative_position_index' in k) or ('attn_mask' in k):
                         del state_dict[k]
-
+        
         elif vit == 'swin_l':
             if image_size == 224:
                 vision_config_path = f'{CONFIG_PATH}/configs/swin/config_swinL_224.json'
@@ -106,7 +106,7 @@ class RAM(nn.Module):
                 ape=False,
                 patch_norm=True,
                 use_checkpoint=False)
-            
+
             if stage == 'train_from_scratch':
                 # download from https://github.com/microsoft/Swin-Transformer
                 state_dict = torch.load(vision_config['ckpt'], map_location="cpu")['model']
@@ -117,6 +117,7 @@ class RAM(nn.Module):
                         state_dict[k] = interpolate_relative_pos_embed(state_dict[k], dst_num_pos, param_name=k)
                     elif ('relative_position_index' in k) or ('attn_mask' in k):
                         del state_dict[k]
+
         else:
             self.visual_encoder, vision_width = create_vit(
                 vit, image_size, vit_grad_ckpt, vit_ckpt_layer)
@@ -124,20 +125,7 @@ class RAM(nn.Module):
         # create tokenzier
         self.tokenizer = init_tokenizer()
 
-        # Tag2Text employ encoder-decoder architecture for image-tag-text generation: image-tag interaction encoder and image-tag-text decoder
-        # create image-tag interaction encoder
-        encoder_config = BertConfig.from_json_file(med_config)
-        encoder_config.encoder_width = 512
-        self.tag_encoder = BertModel(config=encoder_config,
-                                     add_pooling_layer=False)
-
-        # create image-tag-text decoder
-        decoder_config = BertConfig.from_json_file(med_config)
-        self.text_decoder = BertLMHeadModel(config=decoder_config)
-
         self.delete_tag_index = delete_tag_index
-        self.prompt = prompt
-        self.prompt_length = len(self.tokenizer(self.prompt).input_ids) - 1
 
         # load tag list
         self.tag_list = self.load_tag_list(tag_list)
@@ -152,7 +140,7 @@ class RAM(nn.Module):
                                       add_pooling_layer=False)
         self.tagging_head.resize_token_embeddings(len(self.tokenizer))
 
-        self.label_embed = nn.Parameter(torch.load(f'{CONFIG_PATH}/data/frozen_tag_embedding/ram_tag_embedding_class_4585.pth',map_location='cpu').float())
+        self.label_embed = nn.Parameter(torch.load(f'{CONFIG_PATH}/data/frozen_tag_embedding/ram_plus_tag_embedding_class_4585_des_51.pth',map_location='cpu').float())
 
         if q2l_config.hidden_size != 512:
             self.wordvec_proj = nn.Linear(512, q2l_config.hidden_size)
@@ -163,15 +151,7 @@ class RAM(nn.Module):
 
         self.del_selfattention()
 
-        self.tagging_loss_function = AsymmetricLoss(gamma_neg=7,
-                                                    gamma_pos=0,
-                                                    clip=0.05)
-
-        # share weights of the lowest 2-layer of "image-tag interaction encoder" with the "image-tag recogntion decoder"
-        tie_encoder_decoder_weights(self.tag_encoder, self.tagging_head, '',
-                                    ' ')
         self.image_proj = nn.Linear(vision_width, 512)
-        # self.label_embed = nn.Parameter(torch.load(f'{CONFIG_PATH}/data/textual_label_embedding.pth',map_location='cpu').float())
 
         # adjust thresholds for some tags
         self.class_threshold = torch.ones(self.num_class) * self.threshold
@@ -180,6 +160,16 @@ class RAM(nn.Module):
             ram_class_threshold = [float(s.strip()) for s in f]
         for key,value in enumerate(ram_class_threshold):
             self.class_threshold[key] = value
+
+        self.reweight_scale = nn.Parameter(torch.ones([]) * np.log(1 / 0.07))
+
+        self.tagging_loss_function = AsymmetricLoss(gamma_neg=7,
+                                                    gamma_pos=0,
+                                                    clip=0.05)
+
+        self.text_alignment_loss_function = AsymmetricLoss(gamma_neg=4,
+                                                    gamma_pos=0,
+                                                    clip=0.05)
 
     def load_tag_list(self, tag_list_file):
         with open(tag_list_file, 'r', encoding="utf-8") as f:
@@ -193,7 +183,7 @@ class RAM(nn.Module):
         for layer in self.tagging_head.encoder.layer:
             del layer.attention
 
-    def forward(self, image, caption, image_tag, parse_tag, clip_feature):
+    def forward(self, image, caption, image_tag, clip_feature, batch_text_embed):
         """
         call function as forward
 
@@ -206,8 +196,6 @@ class RAM(nn.Module):
             loss: type: torch.Tensor
         """
 
-        label_embed = torch.nn.functional.relu(self.wordvec_proj(self.label_embed))
-
         image_embeds = self.image_proj(self.visual_encoder(image))
         image_atts = torch.ones(image_embeds.size()[:-1],
                                 dtype=torch.long).to(image.device)
@@ -218,9 +206,28 @@ class RAM(nn.Module):
 
         loss_dis = F.l1_loss(image_cls_embeds, clip_feature)
 
-        ##================= Image Tagging ================##
+        ###===========multi tag des reweight==============###
         bs = image_embeds.shape[0]
-        label_embed = label_embed.unsqueeze(0).repeat(bs, 1, 1)
+
+        des_per_class = int(self.label_embed.shape[0] / self.num_class)
+
+        image_cls_embeds = image_cls_embeds / image_cls_embeds.norm(dim=-1, keepdim=True)
+        reweight_scale = self.reweight_scale.exp()
+        logits_per_image = (reweight_scale * image_cls_embeds @ self.label_embed.t())
+        logits_per_image = logits_per_image.view(bs, -1,des_per_class)
+
+        weight_normalized = F.softmax(logits_per_image, dim=2)
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+        weight_normalized = F.softmax(logits_per_image, dim=2)
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+        for i in range(bs):
+            reshaped_value = self.label_embed.view(-1, des_per_class, 512)
+            product = weight_normalized[i].unsqueeze(-1) * reshaped_value
+            label_embed_reweight[i] = product.sum(dim=1)
+
+        label_embed = torch.nn.functional.relu(self.wordvec_proj(label_embed_reweight))
+
+        ##================= Image Tagging ================##
 
         tagging_embed = self.tagging_head(
             encoder_embeds=label_embed,
@@ -234,77 +241,61 @@ class RAM(nn.Module):
 
         loss_tag = self.tagging_loss_function(logits, image_tag)
 
-        ##================= Image-Tag-Text Generation ================##
-        tag = parse_tag.cpu().numpy()
-        tag_input = []
-        for b in range(bs):
-            index = np.argwhere(tag[b] == 1)
-            token = self.tag_list[index].squeeze(axis=1)
-            tag_input.append(' | '.join(token))
-        
-        # tokenizer input tags
-        tag_input_tokenzier = self.tokenizer(tag_input,
-                                             padding='max_length',
-                                             truncation=True,
-                                             max_length=40,
-                                             return_tensors="pt").to(
-                                                 image.device)
-        encoder_input_ids = tag_input_tokenzier.input_ids
-        encoder_input_ids[:, 0] = self.tokenizer.enc_token_id
+        ##================= Image-text Alignment ================##
 
-        # put input tag into image-tag interaction encoder to interact with image embeddings
-        output_tagembedding = self.tag_encoder(
-            encoder_input_ids,
-            attention_mask=tag_input_tokenzier.attention_mask,
+        batch_text_embed = torch.nn.functional.relu(self.wordvec_proj(batch_text_embed.to(self.label_embed.dtype)))
+        batch_text_embed = batch_text_embed.unsqueeze(0).repeat(bs, 1, 1)
+        alignment_embedding = self.tagging_head(
+            encoder_embeds=batch_text_embed,
             encoder_hidden_states=image_embeds,
             encoder_attention_mask=image_atts,
-            return_dict=True,
+            return_dict=False,
+            mode='tagging',
         )
+        alignment_logits = self.fc(alignment_embedding[0]).squeeze(-1)
 
-        text = self.tokenizer(caption,
-                              padding='longest',
-                              truncation=True,
-                              max_length=40,
-                                return_tensors="pt").to(
-                                    image.device)
+        with torch.no_grad():
+            alignment_targets = torch.zeros(alignment_logits.size()).to(image.device)
+            alignment_targets.fill_diagonal_(1)
         
-        decoder_input_ids = text.input_ids
-        decoder_input_ids[:,0] = self.tokenizer.bos_token_id
+        loss_alignment = self.text_alignment_loss_function(alignment_logits,alignment_targets)
 
-        decoder_targets = decoder_input_ids.masked_fill(
-            decoder_input_ids == self.tokenizer.pad_token_id, -100) 
-        decoder_targets[:,:self.prompt_length] = -100
-        
-        decoder_output = self.text_decoder(decoder_input_ids, 
-                                           attention_mask = text.attention_mask, 
-                                           encoder_hidden_states = output_tagembedding.last_hidden_state,
-                                           encoder_attention_mask = None,                  
-                                           labels = decoder_targets,
-                                           return_dict = True,   
-                                          )   
-        
-        loss_t2t = decoder_output.loss
+        return loss_tag, loss_dis, loss_alignment
 
-        return loss_t2t, loss_tag, loss_dis
 
     def generate_tag(self,
-                 image,
-                 threshold=0.68,
-                 tag_input=None,
+                 image
                  ):
-            
-        label_embed = torch.nn.functional.relu(self.wordvec_proj(self.label_embed))
 
         image_embeds = self.image_proj(self.visual_encoder(image))
         image_atts = torch.ones(image_embeds.size()[:-1],
                                 dtype=torch.long).to(image.device)
 
-        # recognized image tags using image-tag recogntiion decoder
         image_cls_embeds = image_embeds[:, 0, :]
         image_spatial_embeds = image_embeds[:, 1:, :]
 
         bs = image_spatial_embeds.shape[0]
-        label_embed = label_embed.unsqueeze(0).repeat(bs, 1, 1)
+
+        des_per_class = int(self.label_embed.shape[0] / self.num_class)
+
+        image_cls_embeds = image_cls_embeds / image_cls_embeds.norm(dim=-1, keepdim=True)
+        reweight_scale = self.reweight_scale.exp()
+        logits_per_image = (reweight_scale * image_cls_embeds @ self.label_embed.t())
+        logits_per_image = logits_per_image.view(bs, -1,des_per_class)
+
+        weight_normalized = F.softmax(logits_per_image, dim=2)
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+        weight_normalized = F.softmax(logits_per_image, dim=2)
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+        for i in range(bs):
+            # 这里对 value_ori 进行 reshape，然后使用 broadcasting
+            reshaped_value = self.label_embed.view(-1, des_per_class, 512)
+            product = weight_normalized[i].unsqueeze(-1) * reshaped_value
+            label_embed_reweight[i] = product.sum(dim=1)
+
+        label_embed = torch.nn.functional.relu(self.wordvec_proj(label_embed_reweight))
+
+        # recognized image tags using alignment decoder
         tagging_embed = self.tagging_head(
             encoder_embeds=label_embed,
             encoder_hidden_states=image_embeds,
@@ -339,19 +330,36 @@ class RAM(nn.Module):
                  threshold=0.68,
                  tag_input=None,
                  ):
-            
-        label_embed = torch.nn.functional.relu(self.wordvec_proj(self.label_embed))
-
+        
         image_embeds = self.image_proj(self.visual_encoder(image))
         image_atts = torch.ones(image_embeds.size()[:-1],
                                 dtype=torch.long).to(image.device)
 
-        # recognized image tags using image-tag recogntiion decoder
         image_cls_embeds = image_embeds[:, 0, :]
         image_spatial_embeds = image_embeds[:, 1:, :]
 
         bs = image_spatial_embeds.shape[0]
-        label_embed = label_embed.unsqueeze(0).repeat(bs, 1, 1)
+
+        des_per_class = int(self.label_embed.shape[0] / self.num_class)
+
+        image_cls_embeds = image_cls_embeds / image_cls_embeds.norm(dim=-1, keepdim=True)
+        reweight_scale = self.reweight_scale.exp()
+        logits_per_image = (reweight_scale * image_cls_embeds @ self.label_embed.t())
+        logits_per_image = logits_per_image.view(bs, -1,des_per_class)
+
+        weight_normalized = F.softmax(logits_per_image, dim=2)
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+        weight_normalized = F.softmax(logits_per_image, dim=2)
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+        for i in range(bs):
+            # 这里对 value_ori 进行 reshape，然后使用 broadcasting
+            reshaped_value = self.label_embed.view(-1, des_per_class, 512)
+            product = weight_normalized[i].unsqueeze(-1) * reshaped_value
+            label_embed_reweight[i] = product.sum(dim=1)
+
+        label_embed = torch.nn.functional.relu(self.wordvec_proj(label_embed_reweight))
+
+        # recognized image tags using alignment decoder
         tagging_embed = self.tagging_head(
             encoder_embeds=label_embed,
             encoder_hidden_states=image_embeds,
@@ -366,7 +374,7 @@ class RAM(nn.Module):
             torch.sigmoid(logits) > self.class_threshold.to(image.device),
             torch.tensor(1.0).to(image.device),
             torch.zeros(self.num_class).to(image.device))
-
+        
         tag = targets.cpu().numpy()
         tag[:,self.delete_tag_index] = 0
         tag_output = []
@@ -378,9 +386,9 @@ class RAM(nn.Module):
         return tag_output
 
 
-# load RAM pretrained model parameters
-def ram(pretrained='', **kwargs):
-    model = RAM(**kwargs)
+# load RAM++ pretrained model parameters
+def ram_plus(pretrained='', **kwargs):
+    model = RAM_plus(**kwargs)
     if pretrained:
         if kwargs['vit'] == 'swin_b':
             model, msg = load_checkpoint_swinbase(model, pretrained, kwargs)

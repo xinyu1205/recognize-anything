@@ -1,5 +1,5 @@
 '''
- * The Recognize Anything Model (RAM) inference on unseen classes
+ * The Recognize Anything Plus Model (RAM++)
  * Written by Xinyu Huang
 '''
 import argparse
@@ -9,23 +9,21 @@ import random
 import torch
 
 from PIL import Image
-from ram.models import ram
-from ram import inference_ram_openset as inference
+from ram.models import ram_plus
+from ram import inference_ram as inference
 from ram import get_transform
 
-from ram.utils import build_openset_label_embedding
-from torch import nn
 
 parser = argparse.ArgumentParser(
     description='Tag2Text inferece for tagging and captioning')
 parser.add_argument('--image',
                     metavar='DIR',
                     help='path to dataset',
-                    default='images/openset_example.jpg')
+                    default='images/demo/demo1.jpg')
 parser.add_argument('--pretrained',
                     metavar='DIR',
                     help='path to pretrained model',
-                    default='pretrained/ram_swin_large_14m.pth')
+                    default='pretrained/ram_plus_swin_large_14m.pth')
 parser.add_argument('--image-size',
                     default=384,
                     type=int,
@@ -42,22 +40,9 @@ if __name__ == "__main__":
     transform = get_transform(image_size=args.image_size)
 
     #######load model
-    model = ram(pretrained=args.pretrained,
+    model = ram_plus(pretrained=args.pretrained,
                              image_size=args.image_size,
                              vit='swin_l')
-    
-    #######set openset interference
-    openset_label_embedding, openset_categories = build_openset_label_embedding()
-
-    model.tag_list = np.array(openset_categories)
-    
-    model.label_embed = nn.Parameter(openset_label_embedding.float())
-
-    model.num_class = len(openset_categories)
-    # the threshold for unseen categories is often lower
-    model.class_threshold = torch.ones(model.num_class) * 0.5
-    #######
-
     model.eval()
 
     model = model.to(device)
@@ -65,4 +50,5 @@ if __name__ == "__main__":
     image = transform(Image.open(args.image)).unsqueeze(0).to(device)
 
     res = inference(image, model)
-    print("Image Tags: ", res)
+    print("Image Tags: ", res[0])
+    print("图像标签: ", res[1])
