@@ -2,7 +2,7 @@
 
 This project aims to develop a series of open-source and strong fundamental image recognition models.
 
-[![Training Dataset](https://img.shields.io/badge/📦-Training%20Dataset-orange.svg)](#open-book-training-datasets)
+[![Training Dataset](https://img.shields.io/badge/📦-Training%20Dataset-orange.svg)](#open_book-training-datasets)
 [![Tag List](https://img.shields.io/badge/🏷️-4585%20Tags-green.svg)](ram/data/ram_tag_list.txt)
 [![Web Demo](https://img.shields.io/badge/🤗-HuggingFace%20Space-cyan.svg)](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mhd-medfa/recognize-anything/blob/main/recognize_anything_demo.ipynb)
@@ -294,6 +294,7 @@ from ram.models import ram_plus, ram, tag2text
 ### **RAM++ Inference** ##
 
 Get the English and Chinese outputs of the images:
+
 <pre/>
 python inference_ram_plus.py  --image images/demo/demo1.jpg \
 --pretrained pretrained/ram_plus_swin_large_14m.pth
@@ -313,7 +314,7 @@ Image Tags:  armchair | blanket | lamp | carpet | couch | dog | gray | green | h
 We have released the LLM tag descriptions of OpenImages-Uncommon categories in [openimages_rare_200_llm_tag_descriptions](./datasets/openimages_rare_200/).
 
 <pre/>
-python inference_ram_openset.py  --image images/openset_example.jpg \
+python inference_ram_plus_openset.py  --image images/openset_example.jpg \
 --pretrained pretrained/ram_plus_swin_large_14m.pth \
 --llm_tag_des datasets/openimages_rare_200/openimages_rare_200_llm_tag_descriptions.json
 </pre>
@@ -338,8 +339,8 @@ python generate_tag_des_llm.py \
 RAM Inference
 </font></summary>
 
-
 Get the English and Chinese outputs of the images:
+
 <pre/>
 python inference_ram.py  --image images/demo/demo1.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
@@ -362,6 +363,7 @@ RAM Inference on Unseen Categories (Open-Set)
 
 
 Firstly, custom recognition categories in [build_openset_label_embedding](./ram/utils/openset_utils.py), then get the tags of the images:
+
 <pre/>
 python inference_ram_openset.py  --image images/openset_example.jpg \
 --pretrained pretrained/ram_swin_large_14m.pth
@@ -457,7 +459,7 @@ To batch inference custom images, you can set up you own datasets following the 
 
 ### **RAM++** ##
 
-1. Download [RAM training datasets](#open_book-datasets-including-texts-and-tags) where each json file contains a list. Each item in the list is a dictonary with three key-value pairs: {'image_path': path_of_image, 'caption': text_of_image, 'union_label_id': image tags for tagging which including parsed tags and pseudo tags }.
+1. Download [RAM training datasets](#open_book-training-datasets) where each json file contains a list. Each item in the list is a dictonary with three key-value pairs: {'image_path': path_of_image, 'caption': text_of_image, 'union_label_id': image tags for tagging which including parsed tags and pseudo tags }.
 
 2. In configs/pretrain.yaml, set 'train_file' as the paths for the json files.
 
@@ -478,7 +480,7 @@ python -m torch.distributed.run --nproc_per_node=8 pretrain.py \
 python -m torch.distributed.run --nproc_per_node=8 finetune.py \
   --model-type ram_plus \
   --config ram/configs/finetune.yaml  \
-  --checkpoint outputs/ram_plus/checkpoint_04.pth
+  --checkpoint outputs/ram_plus/checkpoint_04.pth \
   --output-dir outputs/ram_plus_ft
 ```
 
@@ -488,7 +490,7 @@ python -m torch.distributed.run --nproc_per_node=8 finetune.py \
 RAM 
 </font></summary>
 
-1. Download [RAM training datasets](#open_book-datasets-including-texts-and-tags) where each json file contains a list. Each item in the list is a dictonary with four key-value pairs: {'image_path': path_of_image, 'caption': text_of_image, 'union_label_id': image tags for tagging which including parsed tags and pseudo tags, 'parse_label_id': image tags parsed from caption }.
+1. Download [RAM training datasets](#open_book-training-datasets) where each json file contains a list. Each item in the list is a dictonary with four key-value pairs: {'image_path': path_of_image, 'caption': text_of_image, 'union_label_id': image tags for tagging which including parsed tags and pseudo tags, 'parse_label_id': image tags parsed from caption }.
 
 2. In configs/pretrain_ram.yaml, set 'train_file' as the paths for the json files.
 
@@ -509,7 +511,7 @@ python -m torch.distributed.run --nproc_per_node=8 pretrain.py \
 python -m torch.distributed.run --nproc_per_node=8 finetune.py \
   --model-type ram \
   --config ram/configs/finetune.yaml  \
-  --checkpoint outputs/ram/checkpoint_04.pth
+  --checkpoint outputs/ram/checkpoint_04.pth \
   --output-dir outputs/ram_ft
 ```
 
@@ -521,7 +523,7 @@ python -m torch.distributed.run --nproc_per_node=8 finetune.py \
 Tag2Text 
 </font></summary>
 
-1. Download [RAM training datasets](#open_book-datasets-including-texts-and-tags) where each json file contains a list. Each item in the list is a dictonary with three key-value pairs: {'image_path': path_of_image, 'caption': text_of_image, 'parse_label_id': image tags parsed from caption }.
+1. Download [RAM training datasets](#open_book-training-datasets) where each json file contains a list. Each item in the list is a dictonary with three key-value pairs: {'image_path': path_of_image, 'caption': text_of_image, 'parse_label_id': image tags parsed from caption }.
 
 2. In configs/pretrain_ram.yaml, set 'train_file' as the paths for the json files.
 
@@ -542,7 +544,7 @@ python -m torch.distributed.run --nproc_per_node=8 pretrain.py \
 python -m torch.distributed.run --nproc_per_node=8 finetune.py \
   --model-type tag2text \
   --config ram/configs/finetune_tag2text.yaml  \
-  --checkpoint outputs/tag2text/checkpoint_04.pth
+  --checkpoint outputs/tag2text/checkpoint_04.pth \
   --output-dir outputs/tag2text_ft
 ```
 
