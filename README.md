@@ -461,11 +461,13 @@ To batch inference custom images, you can set up you own datasets following the 
 
 1. Download [RAM training datasets](#open_book-training-datasets) where each json file contains a list. Each item in the list is a dictonary with three key-value pairs: {'image_path': path_of_image, 'caption': text_of_image, 'union_label_id': image tags for tagging which including parsed tags and pseudo tags }.
 
-2. In configs/pretrain.yaml, set 'train_file' as the paths for the json files.
+2. In ram/configs/pretrain.yaml, set 'train_file' as the paths for the json files.
 
-3. Prepare [pretained Swin-Transformer](https://github.com/microsoft/Swin-Transformer), and set 'ckpt' in configs/swin.
+3. Prepare [pretained Swin-Transformer](https://github.com/microsoft/Swin-Transformer), and set 'ckpt' in ram/configs/swin.
 
-4. Pre-train the model using 8 A100 GPUs:
+4. Download RAM++ frozen tag embedding file "[ram_plus_tag_embedding_class_4585_des_51.pth](https://huggingface.co/xinyu1205/recognize-anything-plus-model/blob/main/ram_plus_tag_embedding_class_4585_des_51.pth)", and set file in "ram/data/frozen_tag_embedding/ram_plus_tag_embedding_class_4585_des_51.pth"
+
+5. Pre-train the model using 8 A100 GPUs:
 
 ```bash
 python -m torch.distributed.run --nproc_per_node=8 pretrain.py \
@@ -474,7 +476,7 @@ python -m torch.distributed.run --nproc_per_node=8 pretrain.py \
   --output-dir outputs/ram_plus
 ```
 
-5. Fine-tune the pre-trained checkpoint using 8 A100 GPUs:
+6. Fine-tune the pre-trained checkpoint using 8 A100 GPUs:
 
 ```bash
 python -m torch.distributed.run --nproc_per_node=8 finetune.py \
@@ -492,11 +494,13 @@ RAM
 
 1. Download [RAM training datasets](#open_book-training-datasets) where each json file contains a list. Each item in the list is a dictonary with four key-value pairs: {'image_path': path_of_image, 'caption': text_of_image, 'union_label_id': image tags for tagging which including parsed tags and pseudo tags, 'parse_label_id': image tags parsed from caption }.
 
-2. In configs/pretrain_ram.yaml, set 'train_file' as the paths for the json files.
+2. In ram/configs/pretrain.yaml, set 'train_file' as the paths for the json files.
 
-3. Prepare [pretained Swin-Transformer](https://github.com/microsoft/Swin-Transformer), and set 'ckpt' in configs/swin.
+3. Prepare [pretained Swin-Transformer](https://github.com/microsoft/Swin-Transformer), and set 'ckpt' in ram/configs/swin.
 
-4. Pre-train the model using 8 A100 GPUs:
+4. Download RAM frozen tag embedding file "[ram_tag_embedding_class_4585.pth](https://huggingface.co/xinyu1205/recognize_anything_model/blob/main/ram_tag_embedding_class_4585.pth)", and set file in "ram/data/frozen_tag_embedding/ram_tag_embedding_class_4585.pth"
+
+5. Pre-train the model using 8 A100 GPUs:
 
 ```bash
 python -m torch.distributed.run --nproc_per_node=8 pretrain.py \
@@ -505,7 +509,7 @@ python -m torch.distributed.run --nproc_per_node=8 pretrain.py \
   --output-dir outputs/ram
 ```
 
-5. Fine-tune the pre-trained checkpoint using 8 A100 GPUs:
+6. Fine-tune the pre-trained checkpoint using 8 A100 GPUs:
 
 ```bash
 python -m torch.distributed.run --nproc_per_node=8 finetune.py \
@@ -525,9 +529,9 @@ Tag2Text
 
 1. Download [RAM training datasets](#open_book-training-datasets) where each json file contains a list. Each item in the list is a dictonary with three key-value pairs: {'image_path': path_of_image, 'caption': text_of_image, 'parse_label_id': image tags parsed from caption }.
 
-2. In configs/pretrain_ram.yaml, set 'train_file' as the paths for the json files.
+2. In ram/configs/pretrain_tag2text.yaml, set 'train_file' as the paths for the json files.
 
-3. Prepare [pretained Swin-Transformer](https://github.com/microsoft/Swin-Transformer), and set 'ckpt' in configs/swin.
+3. Prepare [pretained Swin-Transformer](https://github.com/microsoft/Swin-Transformer), and set 'ckpt' in ram/configs/swin.
 
 4. Pre-train the model using 8 A100 GPUs:
 
