@@ -8,7 +8,7 @@ This project aims to develop a series of open-source and strong fundamental imag
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mhd-medfa/recognize-anything/blob/main/recognize_anything_demo.ipynb)
 
 
-- **Recognize Anything Plus Model (RAM++)** [[Paper]()] <br>
+- **Recognize Anything Plus Model (RAM++)** [[Paper](https://arxiv.org/abs/2310.15200)] <br>
 
   RAM++ is the next generation of RAM, which can **recognize any category with high accuracy**, including **both predefined common categories and diverse open-set categories**.
 
@@ -217,7 +217,7 @@ These annotation files come from the [Tag2Text](https://arxiv.org/abs/2303.05657
 
 ### **LLM Tag Descriptions** 
 
-These tag descriptions files come from the [RAM++]() by calling GPT api. You can also customize any tag categories by [generate_tag_des_llm.py](generate_tag_des_llm.py).
+These tag descriptions files come from the [RAM++](https://arxiv.org/abs/2310.15200) by calling GPT api. You can also customize any tag categories by [generate_tag_des_llm.py](generate_tag_des_llm.py).
 
 | Tag Descriptions    | Tag List |
 |---------------------|----------|
@@ -555,6 +555,15 @@ python -m torch.distributed.run --nproc_per_node=8 finetune.py \
 If you find our work to be useful for your research, please consider citing.
 
 ```
+@misc{huang2023inject,
+      title={Inject Semantic Concepts into Image Tagging for Open-Set Recognition}, 
+      author={Xinyu Huang and Yi-Jie Huang and Youcai Zhang and Weiwei Tian and Rui Feng and Yuejie Zhang and Yanchun Xie and Yaqian Li and Lei Zhang},
+      year={2023},
+      eprint={2310.15200},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
 @article{zhang2023recognize,
   title={Recognize Anything: A Strong Image Tagging Model},
   author={Zhang, Youcai and Huang, Xinyu and Ma, Jinyu and Li, Zhaoyang and Luo, Zhaochuan and Xie, Yanchun and Qin, Yuzhuo and Luo, Tong and Li, Yaqian and Liu, Shilong and others},
