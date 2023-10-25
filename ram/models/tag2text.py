@@ -27,7 +27,8 @@ class Tag2Text(nn.Module):
                  prompt='a picture of ',
                  threshold=0.68,
                  delete_tag_index=[127,2961, 3351, 3265, 3338, 3355, 3359],
-                 tag_list=f'{CONFIG_PATH}/data/tag_list.txt'):
+                 tag_list=f'{CONFIG_PATH}/data/tag2text_ori_tag_list.txt',
+                 stage='eval'):
         r""" Tag2Text inference module, both captioning and tagging are included.
         Tag2Text is an efficient and controllable vision-language pre-training framework.
         Described in the paper "Tag2Text: Guiding Vision-Language Model via Image Tagging" https://arxiv.org/abs/2303.05657
@@ -67,6 +68,17 @@ class Tag2Text(nn.Module):
                 ape=False,
                 patch_norm=True,
                 use_checkpoint=False)
+
+            if stage == 'train_from_scratch':
+                # download from https://github.com/microsoft/Swin-Transformer
+                state_dict = torch.load(vision_config['ckpt'], map_location="cpu")['model']
+
+                for k in list(state_dict.keys()):
+                    if 'relative_position_bias_table' in k:
+                        dst_num_pos = (2 * vision_config['window_size'] - 1) ** 2
+                        state_dict[k] = interpolate_relative_pos_embed(state_dict[k], dst_num_pos, param_name=k)
+                    elif ('relative_position_index' in k) or ('attn_mask' in k):
+                        del state_dict[k]
 
         else:
             self.visual_encoder, vision_width = create_vit(
@@ -222,10 +234,7 @@ class Tag2Text(nn.Module):
         
         loss_t2t = decoder_output.loss
 
-        # balance loss scale
-        loss = loss_t2t + loss_tag/(loss_tag/loss_t2t).detach()
-
-        return loss
+        return loss_t2t, loss_tag
 
 
     def generate(self,

@@ -9,10 +9,13 @@ from torch.nn import Module, Parameter
 from torch.nn.functional import relu, sigmoid
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+import torch.nn.functional as F
+import os
+import json
 
 from ram import get_transform
-from ram.models import ram, tag2text
-from ram.utils import build_openset_label_embedding, get_mAP, get_PR
+from ram.models import ram_plus, ram, tag2text
+from ram.utils import build_openset_llm_label_embedding, build_openset_label_embedding, get_mAP, get_PR
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -39,7 +42,7 @@ def parse_args():
     # model
     parser.add_argument("--model-type",
                         type=str,
-                        choices=("ram", "tag2text"),
+                        choices=("ram_plus", "ram", "tag2text"),
                         required=True)
     parser.add_argument("--checkpoint",
                         type=str,
@@ -103,7 +106,7 @@ def parse_args():
     assert not (args.model_type == "tag2text" and args.open_set)
 
     if args.backbone is None:
-        args.backbone = "swin_l" if args.model_type == "ram" else "swin_b"
+        args.backbone = "swin_l" if args.model_type == "ram_plus" or args.model_type == "ram" else "swin_b"
 
     return args
 
@@ -120,9 +123,9 @@ def load_dataset(
     # Label system of tag2text contains duplicate tag texts, like
     # "train" (noun) and "train" (verb). Therefore, for tag2text, we use
     # `tagid` instead of `tag`.
-    if model_type == "ram":
+    if model_type == "ram_plus" or model_type == "ram":
         tag_file = dataset_root + f"/{dataset}_ram_taglist.txt"
-        annot_file = dataset_root + f"/{dataset}_{model_type}_annots.txt"
+        annot_file = dataset_root + f"/{dataset}_ram_annots.txt"
     else:
         tag_file = dataset_root + f"/{dataset}_tag2text_tagidlist.txt"
         annot_file = dataset_root + f"/{dataset}_{model_type}_idannots.txt"
@@ -141,12 +144,22 @@ def load_dataset(
         batch_size=batch_size,
         num_workers=num_workers
     )
+    
+    open_tag_des = dataset_root + f"/{dataset}_llm_tag_descriptions.json"
+    if os.path.exists(open_tag_des):
+        with open(open_tag_des, 'rb') as fo:
+            tag_des = json.load(fo)
+
+    else:
+        tag_des = None
     info = {
         "taglist": taglist,
         "imglist": imglist,
         "annot_file": annot_file,
-        "img_root": img_root
+        "img_root": img_root,
+        "tag_des": tag_des
     }
+
     return loader, info
 
 
@@ -156,7 +169,7 @@ def get_class_idxs(
     taglist: List[str]
 ) -> Optional[List[int]]:
     """Get indices of required categories in the label system."""
-    if model_type == "ram":
+    if model_type == "ram_plus" or model_type == "ram":
         if not open_set:
             model_taglist_file = "ram/data/ram_tag_list.txt"
             with open(model_taglist_file, "r", encoding="utf-8") as f:
@@ -179,7 +192,7 @@ def load_thresholds(
 ) -> List[float]:
     """Decide what threshold(s) to use."""
     if not threshold_file and not threshold:  # use default
-        if model_type == "ram":
+        if model_type == "ram_plus" or model_type == "ram":
             if not open_set:  # use class-wise tuned thresholds
                 ram_threshold_file = "ram/data/ram_tag_list_threshold.txt"
                 with open(ram_threshold_file, "r", encoding="utf-8") as f:
@@ -215,6 +228,27 @@ def gen_pred_file(
                 s = s + "," + ",".join(tag)
             f.write(s + "\n")
 
+def load_ram_plus(
+    backbone: str,
+    checkpoint: str,
+    input_size: int,
+    taglist: List[str],
+    tag_des: List[str],
+    open_set: bool,
+    class_idxs: List[int],
+) -> Module:
+    model = ram_plus(pretrained=checkpoint, image_size=input_size, vit=backbone)
+    # trim taglist for faster inference
+    if open_set:
+        print("Building tag embeddings ...")
+        label_embed, _ = build_openset_llm_label_embedding(tag_des)
+        model.label_embed = Parameter(label_embed.float())
+        model.num_class = len(tag_des)
+    else:
+        model.label_embed = Parameter(model.label_embed.data.reshape(model.num_class,51,512)[class_idxs, :, :].reshape(len(class_idxs)*51, 512))
+        model.num_class = len(class_idxs)
+    return model.to(device).eval()
+
 
 def load_ram(
     backbone: str,
@@ -247,6 +281,43 @@ def load_tag2text(
     )
     return model.to(device).eval()
 
+@torch.no_grad()
+def forward_ram_plus(model: Module, imgs: Tensor) -> Tensor:
+    image_embeds = model.image_proj(model.visual_encoder(imgs.to(device)))
+    image_atts = torch.ones(
+        image_embeds.size()[:-1], dtype=torch.long).to(device)
+
+    image_cls_embeds = image_embeds[:, 0, :]
+    image_spatial_embeds = image_embeds[:, 1:, :]
+
+    bs = image_spatial_embeds.shape[0]
+
+    des_per_class = int(model.label_embed.shape[0] / model.num_class)
+
+    image_cls_embeds = image_cls_embeds / image_cls_embeds.norm(dim=-1, keepdim=True)
+    reweight_scale = model.reweight_scale.exp()
+    logits_per_image = (reweight_scale * image_cls_embeds @ model.label_embed.t())
+    logits_per_image = logits_per_image.view(bs, -1,des_per_class)
+
+    weight_normalized = F.softmax(logits_per_image, dim=2)
+    label_embed_reweight = torch.empty(bs, model.num_class, 512).cuda()
+    weight_normalized = F.softmax(logits_per_image, dim=2)
+    label_embed_reweight = torch.empty(bs, model.num_class, 512).cuda()
+    for i in range(bs):
+        reshaped_value = model.label_embed.view(-1, des_per_class, 512)
+        product = weight_normalized[i].unsqueeze(-1) * reshaped_value
+        label_embed_reweight[i] = product.sum(dim=1)
+
+    label_embed = relu(model.wordvec_proj(label_embed_reweight))
+
+    tagging_embed, _ = model.tagging_head(
+        encoder_embeds=label_embed,
+        encoder_hidden_states=image_embeds,
+        encoder_attention_mask=image_atts,
+        return_dict=False,
+        mode='tagging',
+    )
+    return sigmoid(model.fc(tagging_embed).squeeze(-1))
 
 @torch.no_grad()
 def forward_ram(model: Module, imgs: Tensor) -> Tensor:
@@ -320,8 +391,8 @@ if __name__ == "__main__":
         batch_size=args.batch_size,
         num_workers=args.num_workers
     )
-    taglist, imglist, annot_file, img_root = \
-        info["taglist"], info["imglist"], info["annot_file"], info["img_root"]
+    taglist, imglist, annot_file, img_root, tag_des = \
+        info["taglist"], info["imglist"], info["annot_file"], info["img_root"], info["tag_des"]
 
     # get class idxs
     class_idxs = get_class_idxs(
@@ -347,7 +418,17 @@ if __name__ == "__main__":
 
     else:
         # load model
-        if args.model_type == "ram":
+        if args.model_type == "ram_plus":
+            model = load_ram_plus(
+                backbone=args.backbone,
+                checkpoint=args.checkpoint,
+                input_size=args.input_size,
+                taglist=taglist,
+                tag_des = tag_des,
+                open_set=args.open_set,
+                class_idxs=class_idxs
+            )
+        elif args.model_type == "ram":
             model = load_ram(
                 backbone=args.backbone,
                 checkpoint=args.checkpoint,
@@ -356,7 +437,7 @@ if __name__ == "__main__":
                 open_set=args.open_set,
                 class_idxs=class_idxs
             )
-        else:
+        elif args.model_type == "tag2text":
             model = load_tag2text(
                 backbone=args.backbone,
                 checkpoint=args.checkpoint,
@@ -367,7 +448,9 @@ if __name__ == "__main__":
         logits = torch.empty(len(imglist), len(taglist))
         pos = 0
         for imgs in tqdm(loader, desc="inference"):
-            if args.model_type == "ram":
+            if args.model_type == "ram_plus":
+                out = forward_ram_plus(model, imgs)
+            elif args.model_type == "ram":
                 out = forward_ram(model, imgs)
             else:
                 out = forward_tag2text(model, class_idxs, imgs)

@@ -293,6 +293,7 @@ openimages_rare_unseen = ['Aerial photography',
 def build_openset_label_embedding(categories=None):
     if categories is None:
         categories = openimages_rare_unseen
+    print("Creating pretrained CLIP model")
     model, _ = clip.load("ViT-B/16")
     templates = multiple_templates
 
@@ -312,6 +313,43 @@ def build_openset_label_embedding(categories=None):
                 for text in texts
             ]
             texts = clip.tokenize(texts)  # tokenize
+            if run_on_gpu:
+                texts = texts.cuda()
+                model = model.cuda()
+            text_embeddings = model.encode_text(texts)
+            text_embeddings /= text_embeddings.norm(dim=-1, keepdim=True)
+            text_embedding = text_embeddings.mean(dim=0)
+            text_embedding /= text_embedding.norm()
+            openset_label_embedding.append(text_embedding)
+        openset_label_embedding = torch.stack(openset_label_embedding, dim=1)
+        if run_on_gpu:
+            openset_label_embedding = openset_label_embedding.cuda()
+
+    openset_label_embedding = openset_label_embedding.t()
+    return openset_label_embedding, categories
+
+
+
+import json
+from tqdm import tqdm
+
+def build_openset_llm_label_embedding(llm_tag_des):
+    print("Creating pretrained CLIP model")
+    model, _ = clip.load("ViT-B/16")
+    llm_tag_des = llm_tag_des
+    categories = []
+
+    run_on_gpu = torch.cuda.is_available()
+
+    with torch.no_grad():
+        openset_label_embedding = []
+        for item in tqdm(llm_tag_des):
+            category = list(item.keys())[0]
+            des = list(item.values())[0]
+
+            categories.append(category)
+
+            texts = clip.tokenize(des, truncate=True)  # tokenize
             if run_on_gpu:
                 texts = texts.cuda()
                 model = model.cuda()
