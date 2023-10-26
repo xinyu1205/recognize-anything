@@ -140,7 +140,11 @@ class RAM_plus(nn.Module):
                                       add_pooling_layer=False)
         self.tagging_head.resize_token_embeddings(len(self.tokenizer))
 
-        self.label_embed = nn.Parameter(torch.load(f'{CONFIG_PATH}/data/frozen_tag_embedding/ram_plus_tag_embedding_class_4585_des_51.pth',map_location='cpu').float())
+        if stage == 'train_from_scratch':
+            self.label_embed = nn.Parameter(torch.load(f'{CONFIG_PATH}/data/frozen_tag_embedding/ram_plus_tag_embedding_class_4585_des_51.pth',map_location='cpu').float())
+        else:
+            # when eval with pretrained RAM++ model, directly load from ram_plus_swin_large_14m.pth
+            self.label_embed = nn.Parameter(torch.zeros(self.num_class * 51, q2l_config.encoder_width))
 
         if q2l_config.hidden_size != 512:
             self.wordvec_proj = nn.Linear(512, q2l_config.hidden_size)
