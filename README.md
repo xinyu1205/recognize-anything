@@ -28,7 +28,7 @@ This project aims to develop a series of open-source and strong fundamental imag
 
 ### **Superior Image Recognition Capability** 
 
-RAM++ outperforms existing SOTA image fundamental reocngition models on common tag categories, uncommon tag categories, and  human-object interaction phrases.
+RAM++ outperforms existing SOTA image fundamental recognition models on common tag categories, uncommon tag categories, and  human-object interaction phrases.
 
 <p align="center">
  <table class="tg">
