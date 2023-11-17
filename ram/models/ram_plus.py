@@ -222,8 +222,7 @@ class RAM_plus(nn.Module):
 
         weight_normalized = F.softmax(logits_per_image, dim=2)
         label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
-        weight_normalized = F.softmax(logits_per_image, dim=2)
-        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+
         for i in range(bs):
             reshaped_value = self.label_embed.view(-1, des_per_class, 512)
             product = weight_normalized[i].unsqueeze(-1) * reshaped_value
@@ -289,8 +288,7 @@ class RAM_plus(nn.Module):
 
         weight_normalized = F.softmax(logits_per_image, dim=2)
         label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
-        weight_normalized = F.softmax(logits_per_image, dim=2)
-        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+
         for i in range(bs):
             # 这里对 value_ori 进行 reshape，然后使用 broadcasting
             reshaped_value = self.label_embed.view(-1, des_per_class, 512)
