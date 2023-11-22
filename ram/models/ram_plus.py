@@ -30,10 +30,10 @@ class RAM_plus(nn.Module):
                  tag_list=f'{CONFIG_PATH}/data/ram_tag_list.txt',
                  tag_list_chinese=f'{CONFIG_PATH}/data/ram_tag_list_chinese.txt',
                  stage='eval'):
-        r""" The Recognize Anything Model (RAM) inference module.
-        RAM is a strong image tagging model, which can recognize any common category with high accuracy.
-        Described in the paper " Recognize Anything: A Strong Image Tagging Model" https://recognize-anything.github.io/
-        
+        r""" The Recognize Anything Plus Model (RAM++) inference module.
+        RAM++ is a strong image tagging model, which can recognize any category with high accuracy using tag categories.
+        Described in the paper "Open-Set Image Tagging with Multi-Grained Text Supervision" https://arxiv.org/abs/2310.15200
+
         Args:
             med_config (str): path for the mixture of encoder-decoder model's configuration file
             image_size (int): input image size
@@ -80,7 +80,7 @@ class RAM_plus(nn.Module):
                         state_dict[k] = interpolate_relative_pos_embed(state_dict[k], dst_num_pos, param_name=k)
                     elif ('relative_position_index' in k) or ('attn_mask' in k):
                         del state_dict[k]
-        
+
         elif vit == 'swin_l':
             if image_size == 224:
                 vision_config_path = f'{CONFIG_PATH}/configs/swin/config_swinL_224.json'
@@ -221,7 +221,7 @@ class RAM_plus(nn.Module):
         logits_per_image = logits_per_image.view(bs, -1,des_per_class)
 
         weight_normalized = F.softmax(logits_per_image, dim=2)
-        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).to(image.device)
 
         for i in range(bs):
             reshaped_value = self.label_embed.view(-1, des_per_class, 512)
@@ -260,7 +260,7 @@ class RAM_plus(nn.Module):
         with torch.no_grad():
             alignment_targets = torch.zeros(alignment_logits.size()).to(image.device)
             alignment_targets.fill_diagonal_(1)
-        
+
         loss_alignment = self.text_alignment_loss_function(alignment_logits,alignment_targets)
 
         return loss_tag, loss_dis, loss_alignment
@@ -287,7 +287,7 @@ class RAM_plus(nn.Module):
         logits_per_image = logits_per_image.view(bs, -1,des_per_class)
 
         weight_normalized = F.softmax(logits_per_image, dim=2)
-        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).to(image.device)
 
         for i in range(bs):
             # 这里对 value_ori 进行 reshape，然后使用 broadcasting
@@ -332,7 +332,7 @@ class RAM_plus(nn.Module):
                  threshold=0.68,
                  tag_input=None,
                  ):
-        
+
         image_embeds = self.image_proj(self.visual_encoder(image))
         image_atts = torch.ones(image_embeds.size()[:-1],
                                 dtype=torch.long).to(image.device)
@@ -350,9 +350,8 @@ class RAM_plus(nn.Module):
         logits_per_image = logits_per_image.view(bs, -1,des_per_class)
 
         weight_normalized = F.softmax(logits_per_image, dim=2)
-        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
-        weight_normalized = F.softmax(logits_per_image, dim=2)
-        label_embed_reweight = torch.empty(bs, self.num_class, 512).cuda()
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).to(image.device)
+                     
         for i in range(bs):
             # 这里对 value_ori 进行 reshape，然后使用 broadcasting
             reshaped_value = self.label_embed.view(-1, des_per_class, 512)
@@ -376,7 +375,7 @@ class RAM_plus(nn.Module):
             torch.sigmoid(logits) > self.class_threshold.to(image.device),
             torch.tensor(1.0).to(image.device),
             torch.zeros(self.num_class).to(image.device))
-        
+
         tag = targets.cpu().numpy()
         tag[:,self.delete_tag_index] = 0
         tag_output = []
