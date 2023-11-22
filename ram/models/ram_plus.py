@@ -30,9 +30,9 @@ class RAM_plus(nn.Module):
                  tag_list=f'{CONFIG_PATH}/data/ram_tag_list.txt',
                  tag_list_chinese=f'{CONFIG_PATH}/data/ram_tag_list_chinese.txt',
                  stage='eval'):
-        r""" The Recognize Anything Model (RAM) inference module.
-        RAM is a strong image tagging model, which can recognize any common category with high accuracy.
-        Described in the paper " Recognize Anything: A Strong Image Tagging Model" https://recognize-anything.github.io/
+        r""" The Recognize Anything Plus Model (RAM++) inference module.
+        RAM++ is a strong image tagging model, which can recognize any category with high accuracy using tag categories.
+        Described in the paper "Open-Set Image Tagging with Multi-Grained Text Supervision" https://arxiv.org/abs/2310.15200
 
         Args:
             med_config (str): path for the mixture of encoder-decoder model's configuration file
