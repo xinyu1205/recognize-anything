@@ -207,13 +207,13 @@ These annotation files come from the [Tag2Text](https://arxiv.org/abs/2303.05657
 
 | DataSet  | Size    | Images | Texts | Tags  |
 |----------|---------|--------|-------|-------|
-| [COCO](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset-14m/blob/main/coco_train_rmcocodev_ram.json)     | 168 MB  | 113K   | 680K  | 3.2M  |
-| [VG](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset-14m/blob/main/vg_ram.json)       | 55 MB   | 100K   | 923K  | 2.7M  |
-| [SBU](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset-14m/blob/main/sbu_ram.json)      | 234 MB  | 849K   | 1.7M  | 7.6M  |
-| [CC3M](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset-14m/blob/main/cc3m_train_ram.json)     | 766 MB  | 2.8M   | 5.6M  | 28.2M |
-| [CC3M-val](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset-14m/blob/main/cc3m_val_ram.json) | 3.5 MB  | 12K    | 26K   | 132K  |
-| [CC12M](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset-14m/blob/main/cc12m_ram.json)    | 3.12 GB | 10.26M | 20.5M | 81.7M |
+| [COCO](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset/blob/main/coco_train_rmcocodev_ram.json)     | 168 MB  | 113K   | 680K  | 3.2M  |
+| [VG](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset/blob/main/vg_ram.json)       | 55 MB   | 100K   | 923K  | 2.7M  |
+| [SBU](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset/blob/main/sbu_ram.json)      | 234 MB  | 849K   | 1.7M  | 7.6M  |
+| [CC3M](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset/blob/main/cc3m_train_ram.json)     | 766 MB  | 2.8M   | 5.6M  | 28.2M |
+| [CC3M-val](https://huggingface.co/datasets/xinyu1205/recognize-anything-dataset/blob/main/cc3m_val_ram.json) | 3.5 MB  | 12K    | 26K   | 132K  |
 
+CC12M to be released in the next update.
 
 ### **LLM Tag Descriptions** 
 
