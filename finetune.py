@@ -195,7 +195,7 @@ def main(args, config):
     #### Model #### 
     if args.model_type == 'ram_plus':
         print("Creating pretrained CLIP model")
-        model_clip, _ = clip.load("/home/notebook/data/group/huangxinyu/clip/ViT-B-16.pt")
+        model_clip, _ = clip.load("ViT-B/16", device=device)
 
         print("Creating RAM model")
         model = ram_plus(pretrained = args.checkpoint,image_size=config['image_size'], vit=config['vit'], vit_grad_ckpt=config['vit_grad_ckpt'], 
@@ -203,8 +203,8 @@ def main(args, config):
 
     elif args.model_type == 'ram':
         print("Creating pretrained CLIP model")
-        model_clip, _ = clip.load("/home/notebook/data/group/huangxinyu/clip/ViT-B-16.pt")
-
+        model_clip, _ = clip.load("ViT-B/16", device=device)
+        
         print("Creating RAM model")
         model = ram(pretrained = args.checkpoint,image_size=config['image_size'], vit=config['vit'], vit_grad_ckpt=config['vit_grad_ckpt'], 
                                 vit_ckpt_layer=config['vit_ckpt_layer'])
