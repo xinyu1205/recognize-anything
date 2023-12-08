@@ -559,13 +559,11 @@ python -m torch.distributed.run --nproc_per_node=8 finetune.py \
 If you find our work to be useful for your research, please consider citing.
 
 ```
-@misc{huang2023openset,
-      title={Open-Set Image Tagging with Multi-Grained Text Supervision}, 
-      author={Xinyu Huang and Yi-Jie Huang and Youcai Zhang and Weiwei Tian and Rui Feng and Yuejie Zhang and Yanchun Xie and Yaqian Li and Lei Zhang},
-      year={2023},
-      eprint={2310.15200},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{huang2023inject,
+  title={Inject Semantic Concepts into Image Tagging for Open-Set Recognition},
+  author={Huang, Xinyu and Huang, Yi-Jie and Zhang, Youcai and Tian, Weiwei and Feng, Rui and Zhang, Yuejie and Xie, Yanchun and Li, Yaqian and Zhang, Lei},
+  journal={arXiv preprint arXiv:2310.15200},
+  year={2023}
 }
 
 @article{zhang2023recognize,
