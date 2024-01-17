@@ -17,9 +17,11 @@ This project aims to develop a series of open-source and strong fundamental imag
   RAM is an image tagging model, which can **recognize any common category with high accuracy**.
 
 
-- **Tag2Text**  [[Paper](https://arxiv.org/abs/2303.05657)] [[Demo](https://huggingface.co/spaces/xinyu1205/recognize-anything)]<br>
+- **Tag2Text (ICLR 2024)**  [[Paper](https://arxiv.org/abs/2303.05657)] [[Demo](https://huggingface.co/spaces/xinyu1205/recognize-anything)]<br>
 
   Tag2Text is a vision-language model guided by tagging, which can **support caption and tagging simultaneously**.
+  
+  Tag2Text is accepted at **ICLR 2024!** See you in Vienna!
 
 
 
