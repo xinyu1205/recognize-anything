@@ -324,19 +324,9 @@ class RAM(nn.Module):
             torch.tensor(1.0).to(image.device),
             torch.zeros(self.num_class).to(image.device))
 
-        tag = targets.cpu().numpy()
-        tag[:,self.delete_tag_index] = 0
-        tag_output = []
-        tag_output_chinese = []
-        for b in range(bs):
-            index = np.argwhere(tag[b] == 1)
-            token = self.tag_list[index].squeeze(axis=1)
-            tag_output.append(' | '.join(token))
-            token_chinese = self.tag_list_chinese[index].squeeze(axis=1)
-            tag_output_chinese.append(' | '.join(token_chinese))
-
-
-        return tag_output, tag_output_chinese
+        probs = torch.softmax(logits, dim=-1)
+        result = list(zip(self.tag_list, probs[0].cpu().numpy().tolist()))
+        return result
 
     def generate_tag_openset(self,
                  image,
