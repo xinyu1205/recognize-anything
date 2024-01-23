@@ -366,21 +366,9 @@ class RAM(nn.Module):
 
         logits = self.fc(tagging_embed[0]).squeeze(-1)
 
-        targets = torch.where(
-            torch.sigmoid(logits) > self.class_threshold.to(image.device),
-            torch.tensor(1.0).to(image.device),
-            torch.zeros(self.num_class).to(image.device))
-
-        tag = targets.cpu().numpy()
-        tag[:,self.delete_tag_index] = 0
-        tag_output = []
-        for b in range(bs):
-            index = np.argwhere(tag[b] == 1)
-            token = self.tag_list[index].squeeze(axis=1)
-            tag_output.append(' | '.join(token))
-
-        return tag_output
-
+        probs = torch.softmax(logits, dim=-1)
+        result = list(zip(self.tag_list, probs[0].cpu().numpy().tolist()))
+        return result
 
 # load RAM pretrained model parameters
 def ram(pretrained='', **kwargs):
