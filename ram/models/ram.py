@@ -319,14 +319,9 @@ class RAM(nn.Module):
 
         logits = self.fc(tagging_embed[0]).squeeze(-1)
 
-        targets = torch.where(
-            torch.sigmoid(logits) > self.class_threshold.to(image.device),
-            torch.tensor(1.0).to(image.device),
-            torch.zeros(self.num_class).to(image.device))
-
         probs = torch.softmax(logits, dim=-1)
         result = list(zip(self.tag_list, probs[0].cpu().numpy().tolist()))
-        return result
+        return result    
 
     def generate_tag_openset(self,
                  image,
@@ -370,7 +365,6 @@ class RAM(nn.Module):
             tag_output.append(' | '.join(token))
 
         return tag_output
-
 
 # load RAM pretrained model parameters
 def ram(pretrained='', **kwargs):
