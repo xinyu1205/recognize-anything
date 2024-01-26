@@ -64,7 +64,8 @@ def train_ram_plus(model, data_loader, optimizer, epoch, device, config, model_c
         image = image.to(device,non_blocking=True)
         image_224 = image_224.to(device,non_blocking=True)
 
-        clip_image_feature = model_clip.encode_image(image_224)
+        with torch.no_grad():
+            clip_image_feature = model_clip.encode_image(image_224)
 
         loss_tag, loss_dis, loss_alignment = model(image, caption, image_tag, clip_image_feature, batch_text_embed)  
         loss = loss_tag + loss_dis + loss_alignment
@@ -107,7 +108,8 @@ def train_ram(model, data_loader, optimizer, epoch, device, config, model_clip):
         image = image.to(device,non_blocking=True)
         image_224 = image_224.to(device,non_blocking=True)
 
-        clip_image_feature = model_clip.encode_image(image_224)
+        with torch.no_grad():
+            clip_image_feature = model_clip.encode_image(image_224)
 
         loss_t2t, loss_tag, loss_dis = model(image, caption, image_tag, parse_tag, clip_image_feature)  
         loss = loss_t2t + loss_tag/(loss_tag/loss_t2t).detach() + loss_dis  
@@ -214,7 +216,12 @@ def main(args, config):
         model = tag2text(pretrained = args.checkpoint,image_size=config['image_size'], vit=config['vit'], vit_grad_ckpt=config['vit_grad_ckpt'], 
                                 vit_ckpt_layer=config['vit_ckpt_layer'], tag_list='ram/data/ram_tag_list.txt')
     model = model.to(device)   
-    
+
+    ### Frozen CLIP model ###
+    model_clip = model_clip.to(device)
+    for _, param in model_clip.named_parameters():
+        param.requires_grad = False
+
     ### Frozen label embedding for open-set recogniztion ###
     model.label_embed.requires_grad = False
     optimizer = torch.optim.AdamW(filter(lambda x: x.requires_grad, model.parameters()), lr=config['init_lr'], weight_decay=config['weight_decay'])
