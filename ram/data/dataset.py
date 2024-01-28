@@ -40,10 +40,14 @@ class pretrain_dataset(Dataset):
         image = Image.open(image_path_use).convert('RGB')   
         image = self.transform(image)
 
-        num = ann['union_label_id']
-        image_tag = np.zeros([self.class_num])
-        image_tag[num] = 1
-        image_tag = torch.tensor(image_tag, dtype = torch.long)
+        # required for tag2text support
+        if ann.get('union_label_id') is not None:
+            num = ann['union_label_id'] 
+            image_tag = np.zeros([self.class_num]) 
+            image_tag[num] = 1 
+            image_tag = torch.tensor(image_tag, dtype = torch.long)
+        else:
+            image_tag = None
 
         caption_index = np.random.randint(0, len(ann['caption']))
 
@@ -86,10 +90,14 @@ class finetune_dataset(Dataset):
         image_224 = Image.open(image_path_use).convert('RGB')  
         image_224 = self.transform_224(image_224)
 
-        num = ann['union_label_id']
-        image_tag = np.zeros([self.class_num])
-        image_tag[num] = 1
-        image_tag = torch.tensor(image_tag, dtype = torch.long)
+        # required for tag2text support
+        if ann.get('union_label_id') is not None:
+            num = ann['union_label_id'] 
+            image_tag = np.zeros([self.class_num]) 
+            image_tag[num] = 1 
+            image_tag = torch.tensor(image_tag, dtype = torch.long)
+        else:
+            image_tag = None
 
         caption_index = np.random.randint(0, len(ann['caption']))
 
