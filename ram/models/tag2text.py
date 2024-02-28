@@ -21,6 +21,7 @@ class Tag2Text(nn.Module):
     def __init__(self,
                  med_config=f'{CONFIG_PATH}/configs/med_config.json',
                  image_size=384,
+                 text_encoder_type='bert-base-uncased',
                  vit='base',
                  vit_grad_ckpt=False,
                  vit_ckpt_layer=0,
@@ -85,7 +86,7 @@ class Tag2Text(nn.Module):
                 vit, image_size, vit_grad_ckpt, vit_ckpt_layer)
 
         # create tokenzier
-        self.tokenizer = init_tokenizer()
+        self.tokenizer = init_tokenizer(text_encoder_type)
 
         # Tag2Text employ encoder-decoder architecture for image-tag-text generation: image-tag interaction encoder and image-tag-text decoder
         # create image-tag interaction encoder
