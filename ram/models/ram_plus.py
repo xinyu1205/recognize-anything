@@ -222,7 +222,7 @@ class RAM_plus(nn.Module):
         logits_per_image = logits_per_image.view(bs, -1,des_per_class)
 
         weight_normalized = F.softmax(logits_per_image, dim=2)
-        label_embed_reweight = torch.empty(bs, self.num_class, 512).to(image.device)
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).to(image.device).to(image.dtype)
 
         for i in range(bs):
             reshaped_value = self.label_embed.view(-1, des_per_class, 512)
@@ -288,7 +288,7 @@ class RAM_plus(nn.Module):
         logits_per_image = logits_per_image.view(bs, -1,des_per_class)
 
         weight_normalized = F.softmax(logits_per_image, dim=2)
-        label_embed_reweight = torch.empty(bs, self.num_class, 512).to(image.device)
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).to(image.device).to(image.dtype)
 
         for i in range(bs):
             # 这里对 value_ori 进行 reshape，然后使用 broadcasting
@@ -351,7 +351,7 @@ class RAM_plus(nn.Module):
         logits_per_image = logits_per_image.view(bs, -1,des_per_class)
 
         weight_normalized = F.softmax(logits_per_image, dim=2)
-        label_embed_reweight = torch.empty(bs, self.num_class, 512).to(image.device)
+        label_embed_reweight = torch.empty(bs, self.num_class, 512).to(image.device).to(image.dtype)
                      
         for i in range(bs):
             # 这里对 value_ori 进行 reshape，然后使用 broadcasting
