@@ -15,11 +15,12 @@ This project aims to develop a series of open-source and strong fundamental imag
 - **Recognize Anything Model (RAM)** [[Paper](https://arxiv.org/abs/2306.03514)][[Demo](https://huggingface.co/spaces/xinyu1205/recognize-anything)] <br>
 
   RAM is an image tagging model, which can **recognize any common category with high accuracy**.
-
+  
+  RAM is accepted at **CVPR 2024 Multimodal Foundation Models Workshop**.
 
 - **Tag2Text (ICLR 2024)**  [[Paper](https://arxiv.org/abs/2303.05657)] [[Demo](https://huggingface.co/spaces/xinyu1205/recognize-anything)]<br>
 
-  Tag2Text is a vision-language model guided by tagging, which can **support caption and tagging simultaneously**.
+  Tag2Text is a vision-language model guided by tagging, which can **support tagging and comprehensive captioning simultaneously**.
   
   Tag2Text is accepted at **ICLR 2024!** See you in Vienna!
 
