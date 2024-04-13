@@ -81,6 +81,11 @@ class Tag2Text(nn.Module):
                     elif ('relative_position_index' in k) or ('attn_mask' in k):
                         del state_dict[k]
 
+                print("### Load Vision Backbone", vit)
+                msg = self.visual_encoder.load_state_dict(state_dict, strict = False)
+                print("missing_keys: ", msg.missing_keys)
+                print("unexpected_keys: ", msg.unexpected_keys)
+
         else:
             self.visual_encoder, vision_width = create_vit(
                 vit, image_size, vit_grad_ckpt, vit_ckpt_layer)

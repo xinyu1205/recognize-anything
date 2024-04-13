@@ -82,6 +82,11 @@ class RAM(nn.Module):
                     elif ('relative_position_index' in k) or ('attn_mask' in k):
                         del state_dict[k]
 
+                print("### Load Vision Backbone", vit)
+                msg = self.visual_encoder.load_state_dict(state_dict, strict = False)
+                print("missing_keys: ", msg.missing_keys)
+                print("unexpected_keys: ", msg.unexpected_keys)
+
         elif vit == 'swin_l':
             if image_size == 224:
                 vision_config_path = f'{CONFIG_PATH}/configs/swin/config_swinL_224.json'
@@ -118,6 +123,12 @@ class RAM(nn.Module):
                         state_dict[k] = interpolate_relative_pos_embed(state_dict[k], dst_num_pos, param_name=k)
                     elif ('relative_position_index' in k) or ('attn_mask' in k):
                         del state_dict[k]
+
+                print("### Load Vision Backbone", vit)
+                msg = self.visual_encoder.load_state_dict(state_dict, strict = False)
+                print("missing_keys: ", msg.missing_keys)
+                print("unexpected_keys: ", msg.unexpected_keys)
+
         else:
             self.visual_encoder, vision_width = create_vit(
                 vit, image_size, vit_grad_ckpt, vit_ckpt_layer)
