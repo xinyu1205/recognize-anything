@@ -245,7 +245,7 @@ These tag descriptions files come from the [RAM++](https://arxiv.org/abs/2310.15
     <tr>
       <th>1</th>
       <td>RAM++ (14M)</td>
-      <td>Swin-Base</td>
+      <td>Swin-Large</td>
       <td>COCO, VG, SBU, CC3M, CC3M-val, CC12M</td>
       <td>Provide strong image tagging ability for any category.</td>
       <td><a href="https://huggingface.co/xinyu1205/recognize-anything-plus-model/blob/main/ram_plus_swin_large_14m.pth">Download  link</a></td>

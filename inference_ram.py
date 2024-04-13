@@ -28,7 +28,7 @@ parser.add_argument('--image-size',
                     default=384,
                     type=int,
                     metavar='N',
-                    help='input image size (default: 448)')
+                    help='input image size (default: 384)')
 
 
 if __name__ == "__main__":
