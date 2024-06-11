@@ -355,14 +355,16 @@ def build_openset_llm_label_embedding(llm_tag_des):
                 model = model.cuda()
             text_embeddings = model.encode_text(texts)
             text_embeddings /= text_embeddings.norm(dim=-1, keepdim=True)
-            text_embedding = text_embeddings.mean(dim=0)
-            text_embedding /= text_embedding.norm()
-            openset_label_embedding.append(text_embedding)
-        openset_label_embedding = torch.stack(openset_label_embedding, dim=1)
+            # text_embedding = text_embeddings.mean(dim=0)
+            # text_embedding /= text_embedding.norm()
+            # openset_label_embedding.append(text_embedding)
+            openset_label_embedding.append(text_embeddings)
+        # openset_label_embedding = torch.stack(openset_label_embedding, dim=1)
+        openset_label_embedding = torch.cat(openset_label_embedding, dim=0)
         if run_on_gpu:
             openset_label_embedding = openset_label_embedding.cuda()
 
-    openset_label_embedding = openset_label_embedding.t()
+    # openset_label_embedding = openset_label_embedding.t()
     return openset_label_embedding, categories
 
 
