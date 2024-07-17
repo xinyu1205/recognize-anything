@@ -228,7 +228,7 @@ These tag descriptions files come from the [RAM++](https://arxiv.org/abs/2310.15
 | [OpenImages Uncommon](./datasets/openimages_rare_200/openimages_rare_200_llm_tag_descriptions.json) | [200](datasets/openimages_rare_200/openimages_rare_200_ram_taglist.txt)      |
 
 ## :toolbox: Checkpoints
-
+Note : you need to create 'pretrained' folder and download these checkpoints into this folder.
 <!-- insert a table -->
 <table>
   <thead>
@@ -423,7 +423,7 @@ To evaluate RAM++ open-set capability on `OpenImages-rare`:
 ```bash
 python batch_inference.py \
   --model-type ram_plus \
-  --checkpoint pretrained/ram_plus_swin_large_14m.pth \
+  -- pretrained/ram_plus_swin_large_14m.pth \
   --open-set \
   --dataset openimages_rare_200 \
   --output-dir outputs/ram_plus_openset
@@ -434,7 +434,7 @@ To evaluate RAM on `OpenImages-common`:
 ```bash
 python batch_inference.py \
   --model-type ram \
-  --checkpoint pretrained/ram_swin_large_14m.pth \
+  -- pretrained/ram_swin_large_14m.pth \
   --dataset openimages_common_214 \
   --output-dir outputs/ram
 ```
@@ -444,7 +444,7 @@ To evaluate RAM open-set capability on `OpenImages-rare`:
 ```bash
 python batch_inference.py \
   --model-type ram \
-  --checkpoint pretrained/ram_swin_large_14m.pth \
+  -- pretrained/ram_swin_large_14m.pth \
   --open-set \
   --dataset openimages_rare_200 \
   --output-dir outputs/ram_openset
@@ -455,7 +455,7 @@ To evaluate Tag2Text on `OpenImages-common`:
 ```bash
 python batch_inference.py \
   --model-type tag2text \
-  --checkpoint pretrained/tag2text_swin_14m.pth \
+  -- pretrained/tag2text_swin_14m.pth \
   --dataset openimages_common_214 \
   --output-dir outputs/tag2text
 ```
