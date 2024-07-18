@@ -228,7 +228,7 @@ These tag descriptions files come from the [RAM++](https://arxiv.org/abs/2310.15
 | [OpenImages Uncommon](./datasets/openimages_rare_200/openimages_rare_200_llm_tag_descriptions.json) | [200](datasets/openimages_rare_200/openimages_rare_200_ram_taglist.txt)      |
 
 ## :toolbox: Checkpoints
-
+Note : you need to create 'pretrained' folder and download these checkpoints into this folder.
 <!-- insert a table -->
 <table>
   <thead>
@@ -274,13 +274,20 @@ These tag descriptions files come from the [RAM++](https://arxiv.org/abs/2310.15
 
 ### **Setting Up** ###
 
-1. Install recognize-anything as a package:
+1. Create and activate a Conda environment:
+
+```bash
+conda create -n recognize-anything python=3.8 -y
+conda activate recognize-anything
+```
+
+2. Install `recognize-anything` as a package:
 
 ```bash
 pip install git+https://github.com/xinyu1205/recognize-anything.git
 ```
 
-2. Or, for development, you may build from source
+3. Or, for development, you may build from source:
 
 ```bash
 git clone https://github.com/xinyu1205/recognize-anything.git
@@ -288,20 +295,20 @@ cd recognize-anything
 pip install -e .
 ```
 
-Then the RAM++, RAM and Tag2Text model can be imported in other projects:
+Then the RAM++, RAM, and Tag2Text models can be imported in other projects:
 
 ```python
 from ram.models import ram_plus, ram, tag2text
 ```
 
-### **RAM++ Inference** ##
+### **RAM++ Inference** ###
 
 Get the English and Chinese outputs of the images:
 
-<pre/>
-python inference_ram_plus.py  --image images/demo/demo1.jpg \
---pretrained pretrained/ram_plus_swin_large_14m.pth
-</pre>
+```bash
+python inference_ram_plus.py --image images/demo/demo1.jpg --pretrained pretrained/ram_plus_swin_large_14m.pth
+```
+
 
 The output will look like the following:
 
@@ -416,7 +423,7 @@ To evaluate RAM++ open-set capability on `OpenImages-rare`:
 ```bash
 python batch_inference.py \
   --model-type ram_plus \
-  --checkpoint pretrained/ram_plus_swin_large_14m.pth \
+  -- pretrained/ram_plus_swin_large_14m.pth \
   --open-set \
   --dataset openimages_rare_200 \
   --output-dir outputs/ram_plus_openset
@@ -427,7 +434,7 @@ To evaluate RAM on `OpenImages-common`:
 ```bash
 python batch_inference.py \
   --model-type ram \
-  --checkpoint pretrained/ram_swin_large_14m.pth \
+  -- pretrained/ram_swin_large_14m.pth \
   --dataset openimages_common_214 \
   --output-dir outputs/ram
 ```
@@ -437,7 +444,7 @@ To evaluate RAM open-set capability on `OpenImages-rare`:
 ```bash
 python batch_inference.py \
   --model-type ram \
-  --checkpoint pretrained/ram_swin_large_14m.pth \
+  -- pretrained/ram_swin_large_14m.pth \
   --open-set \
   --dataset openimages_rare_200 \
   --output-dir outputs/ram_openset
@@ -448,7 +455,7 @@ To evaluate Tag2Text on `OpenImages-common`:
 ```bash
 python batch_inference.py \
   --model-type tag2text \
-  --checkpoint pretrained/tag2text_swin_14m.pth \
+  -- pretrained/tag2text_swin_14m.pth \
   --dataset openimages_common_214 \
   --output-dir outputs/tag2text
 ```
