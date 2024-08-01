@@ -6,6 +6,7 @@ This project aims to develop a series of open-source and strong fundamental imag
 [![Tag List](https://img.shields.io/badge/🏷️-4585%20Tags-green.svg)](ram/data/ram_tag_list.txt)
 [![Web Demo](https://img.shields.io/badge/🤗-HuggingFace%20Space-cyan.svg)](https://huggingface.co/spaces/xinyu1205/Recognize_Anything-Tag2Text)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mhd-medfa/recognize-anything/blob/main/recognize_anything_demo.ipynb)
+[![Open in Bohrium](https://cdn.dp.tech/bohrium/web/static/images/open-in-bohrium.svg)](https://bohrium.dp.tech/notebooks/63116114759)
 
 
 - **Recognize Anything Plus Model (RAM++)** [[Paper](https://arxiv.org/abs/2310.15200)] <br>
