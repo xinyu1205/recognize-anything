@@ -131,6 +131,7 @@ dmypy.json
 # checkpoint
 *.pth
 outputs/
+pretrained
 
 # Editor
 .idea/
