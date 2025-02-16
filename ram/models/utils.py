@@ -8,7 +8,7 @@ from typing import List
 from transformers import BertTokenizer
 from urllib.parse import urlparse
 from timm.models.hub import download_cached_file
-from .vit import interpolate_pos_embed
+from .vit import interpolate_pos_embed, VisionTransformer
 from .swin_transformer import interpolate_relative_pos_embed
 from pathlib import Path
 CONFIG_PATH=(Path(__file__).resolve().parents[1])
